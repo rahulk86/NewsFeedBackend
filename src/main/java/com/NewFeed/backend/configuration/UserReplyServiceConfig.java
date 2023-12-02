@@ -17,11 +17,8 @@ public class UserReplyServiceConfig {
         ModelMapper modelMapper = new ModelMapper();
         Converter<List<NewFeedReply>, Long> repliesToLong = c -> Long.valueOf(c.getSource()==null?0:c.getSource().size());
         modelMapper.typeMap(NewFeedReply.class, UserReplyDto.class).addMappings(mapper -> {
-            mapper.map(src -> src.getUserProfile().getId(),UserReplyDto::setUser_id);
-            mapper.map(NewFeedReply::getUpVotes,UserReplyDto::setUpVotes);
-            mapper.map(NewFeedReply::getDownVotes,UserReplyDto::setDownVotes);
-            mapper.map(src -> src.getComment().getId(),UserReplyDto::setCommentId);
-            mapper.map(src -> src.getReply().getId(),UserReplyDto::setReplyId);
+            mapper.map(src -> src.getParent().getId(),UserReplyDto::setCommentId);
+            mapper.map(src -> src.getParent().getId(),UserReplyDto::setReplyId);
             mapper.using(repliesToLong).map(NewFeedReply::getReplies,UserReplyDto::setReplies);
         });
 

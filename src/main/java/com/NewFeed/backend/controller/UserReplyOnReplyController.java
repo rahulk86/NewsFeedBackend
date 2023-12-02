@@ -5,7 +5,7 @@ import com.NewFeed.backend.dto.UserReplyDto;
 import com.NewFeed.backend.exception.UserCommentException;
 import com.NewFeed.backend.exception.UserPostException;
 import com.NewFeed.backend.modal.Votable;
-import com.NewFeed.backend.payload.Request.RepliesByComment;
+import com.NewFeed.backend.payload.Request.RepliesByReply;
 import com.NewFeed.backend.payload.Request.VoteOnReply;
 import com.NewFeed.backend.payload.Response.MessageResponse;
 import com.NewFeed.backend.service.UserCommentService;
@@ -49,11 +49,11 @@ public class UserReplyOnReplyController {
         }
     }
 
-    @GetMapping("/get")
-    public ResponseEntity<?> getReplies(@RequestBody RepliesByComment repliesByComment, Authentication authentication ){
+    @PostMapping("/get")
+    public ResponseEntity<?> getReplies(@RequestBody RepliesByReply repliesByReply, Authentication authentication ){
         try{
             UserDto principal = (UserDto) authentication.getPrincipal();
-            List<UserReplyDto> replies = userReplyService.getReplyByCommentId(repliesByComment.getCommentId());
+            List<UserReplyDto> replies = userReplyService.getReplyByReplyId(repliesByReply.getReplyId(),principal.getId());
             return ResponseEntity.ok(replies);
         }
         catch (UserPostException e){

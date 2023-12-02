@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity(name = "feedPost")
-public class NewFeedPost extends NewFeedTextContent implements Votable,Imageable{
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "post")
+public class NewFeedPost extends Replyable implements Votable,Imageable{
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "parent")
     private List<NewFeedComment> comments;
 }

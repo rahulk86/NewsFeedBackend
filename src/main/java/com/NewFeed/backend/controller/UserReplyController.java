@@ -49,11 +49,11 @@ public class UserReplyController {
         }
     }
 
-    @GetMapping("/get")
+    @PostMapping("/get")
     public ResponseEntity<?> getReplies(@RequestBody RepliesByComment repliesByComment, Authentication authentication ){
         try{
             UserDto principal = (UserDto) authentication.getPrincipal();
-            List<UserReplyDto> replies = userReplyService.getReplyByCommentId(repliesByComment.getCommentId());
+            List<UserReplyDto> replies = userReplyService.getReplyByCommentId(repliesByComment.getCommentId(),principal.getId());
             return ResponseEntity.ok(replies);
         }
         catch (UserPostException e){

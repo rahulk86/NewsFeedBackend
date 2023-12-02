@@ -45,7 +45,7 @@ public class UserCommentServiceImpl implements UserCommentService {
 
         NewFeedPost newFeedPost = userPostRepository.findById(userCommentDto.getPostId()).
                 orElseThrow(() -> new UserCommentException("UserCommentException !! not allow to comment on this post id :" + userCommentDto.getPostId()));;
-        newFeedComment.setPost(newFeedPost);
+        newFeedComment.setParent(newFeedPost);
         newFeedComment.setUserProfile(userProfile);
 
         return this.commentModelMapper.map(userCommentRepository.save(newFeedComment),UserCommentDto.class);
@@ -61,7 +61,7 @@ public class UserCommentServiceImpl implements UserCommentService {
 
 
         return  userCommentRepository
-                    .findAllByPostAndUserId(newFeedPost,postId)
+                    .findAllByPostAndUserId(newFeedPost,userId)
                     .orElse(new ArrayList<>())
                     .stream()
                     .map(this::commentToDto)

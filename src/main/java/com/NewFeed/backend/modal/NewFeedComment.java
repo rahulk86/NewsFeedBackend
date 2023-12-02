@@ -11,11 +11,10 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "feedComment")
-public class NewFeedComment extends NewFeedTextContent implements Votable{
+public class NewFeedComment extends Replyable implements Votable{
     @ManyToOne
-    private NewFeedPost post;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "comment")
+    private NewFeedPost parent;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "parent")
     private List<NewFeedReply> commentReplies;
 
 

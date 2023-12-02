@@ -8,7 +8,9 @@ import lombok.Setter;
 public class UserReplyDto {
     private Long id;
     private String text;
-    private Long user_id;
+    private boolean liked;
+    private boolean disLiked;
+    private UserProfileDto userProfile;
     private Long commentId;
     private Long replyId;
     private Long upVotes;

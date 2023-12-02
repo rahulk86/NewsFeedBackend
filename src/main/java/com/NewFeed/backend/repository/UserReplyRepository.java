@@ -1,7 +1,7 @@
 package com.NewFeed.backend.repository;
 
 import com.NewFeed.backend.modal.NewFeedReply;
-import com.NewFeed.backend.modal.NewFeedUser;
+import com.NewFeed.backend.modal.Replyable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -9,23 +9,27 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserReplyRepository extends JpaRepository<NewFeedReply,Long> {
-    Optional<List<NewFeedReply>> findByUserProfileAndCommentId(NewFeedUser user,Long commentId);
-    Optional<List<NewFeedReply>> findByUserProfileAndReplyId(NewFeedUser user,Long ReplyId);
-
-    @Query("select new com.NewFeed.backend.modal.NewFeedReply( reply ," +
+    @Query("select " +
+            " reply ," +
             " count(upVote) ," +
-            " count(downVote) " +
-            ") " +
+            " count(downVote) ," +
+            " SUM(CASE WHEN upVote.user.id = ?2 THEN 1 ELSE 0 END) > 0 ,"+
+            " SUM(CASE WHEN downVote.user.id = ?2 THEN 1 ELSE 0 END) > 0 , "+
+            " profileImage "+
             "from NewFeedReply reply " +
+            "left join Image profileImage on profileImage.imageableId = reply.userProfile.id and" +
+            " profileImage.imageableType = 'UserProfile' and" +
+            " profileImage.active = 1 " +
             "left join Vote upVote on upVote.votableId = reply.id and" +
-            " upVote.votableType = 'NewFeedReply' and" +
+            " upVote.votableType = 'NewFeedComment' and" +
             " upVote.voteType = VoteType.UPVOTE and" +
             " upVote.active = 1 " +
             "left join Vote downVote on downVote.votableId = reply.id and" +
-            " downVote.votableType = 'NewFeedReply' and" +
+            " downVote.votableType = 'NewFeedComment' and" +
             " downVote.voteType = VoteType.DOWNVOTE and" +
             " downVote.active = 1 " +
-            "where reply.id = ?1 ")
-    @Override
-    Optional<NewFeedReply> findById(Long replyId);
+            "where reply.parent = ?1 "+
+            "group by " +
+            "reply , profileImage ")
+    Optional<List<Object[]>> findAllByReplyableAndUserId(Replyable readable, Long userId);
 }

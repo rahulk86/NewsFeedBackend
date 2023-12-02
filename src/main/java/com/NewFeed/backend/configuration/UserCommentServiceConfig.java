@@ -18,7 +18,7 @@ public class UserCommentServiceConfig {
         ModelMapper modelMapper = new ModelMapper();
         Converter<List<NewFeedReply>, Long> repliesToLong = c -> Long.valueOf(c.getSource()==null?0:c.getSource().size());
         modelMapper.typeMap(NewFeedComment.class, UserCommentDto.class).addMappings(mapper -> {
-            mapper.map(src -> src.getPost().getId(),UserCommentDto::setPostId);
+            mapper.map(src -> src.getParent().getId(),UserCommentDto::setPostId);
             mapper.using(repliesToLong).map(NewFeedComment::getCommentReplies,UserCommentDto::setReplies);
         });
 

@@ -10,8 +10,8 @@ import java.util.List;
 public interface UserReplyService {
     public UserReplyDto createCommentReply(UserDto userDto, UserReplyDto userReplyDto);
     public UserReplyDto createReplyReply(UserDto userDto, UserReplyDto userReplyDto);
-    public List<UserReplyDto> getReplyByCommentId(Long id);
-    public List<UserReplyDto> getReplyByReplyId(Long id);
+    public List<UserReplyDto> getReplyByCommentId(Long id,Long userId);
+    public List<UserReplyDto> getReplyByReplyId(Long id,Long userId);
     Votable getVotableOnReply(VoteOnReply voteOnReply);
     UserReplyDto votableToDto(Votable votable);
 

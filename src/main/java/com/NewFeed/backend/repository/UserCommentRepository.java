@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserCommentRepository extends JpaRepository<NewFeedComment,Long> {
-    Optional<List<NewFeedComment>> findByPostId(Long postId);
+    Optional<List<NewFeedComment>> findByParent(NewFeedPost post);
 
     @Query("select " +
                 " comment ," +
@@ -30,7 +30,7 @@ public interface UserCommentRepository extends JpaRepository<NewFeedComment,Long
                     " downVote.votableType = 'NewFeedComment' and" +
                     " downVote.voteType = VoteType.DOWNVOTE and" +
                     " downVote.active = 1 " +
-                "where comment.post = ?1 "+
+                "where comment.parent = ?1 "+
                 "group by " +
                     "comment , profileImage ")
     Optional<List<Object[]>> findAllByPostAndUserId(NewFeedPost post, Long userId);

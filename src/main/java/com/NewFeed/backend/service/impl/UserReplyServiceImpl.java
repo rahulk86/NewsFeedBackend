@@ -1,25 +1,29 @@
 package com.NewFeed.backend.service.impl;
 
-import com.NewFeed.backend.dto.UserDto;
-import com.NewFeed.backend.dto.UserReplyDto;
+import com.NewFeed.backend.dto.*;
 import com.NewFeed.backend.exception.UserReplyException;
 import com.NewFeed.backend.modal.*;
 import com.NewFeed.backend.payload.Request.VoteOnReply;
-import com.NewFeed.backend.repository.*;
+import com.NewFeed.backend.repository.UserCommentRepository;
+import com.NewFeed.backend.repository.UserPostRepository;
+import com.NewFeed.backend.repository.UserProfileRepository;
+import com.NewFeed.backend.repository.UserReplyRepository;
 import com.NewFeed.backend.service.UserReplyService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserReplyServiceImpl implements UserReplyService {
     @Autowired
-    UserCommentRepository userCommentRepository;
+    private UserCommentRepository userCommentRepository;
     @Autowired
-    UserReplyRepository userReplyRepository;
+    private UserReplyRepository userReplyRepository;
     @Autowired
     private UserPostRepository userPostRepository;
     @Autowired
@@ -35,6 +39,10 @@ public class UserReplyServiceImpl implements UserReplyService {
     @Qualifier("userCommentServiceModelMapper")
     private  ModelMapper commentModelMapper;
 
+    @Autowired
+    @Qualifier("userImageServiceModelMapper")
+    private  ModelMapper imageModelMapper;
+
     @Override
     public UserReplyDto createCommentReply(UserDto userDto, UserReplyDto userReplyDto) {
         NewFeedReply reply = replyServiceModelMapper.map(userReplyDto, NewFeedReply.class);
@@ -45,7 +53,7 @@ public class UserReplyServiceImpl implements UserReplyService {
         NewFeedComment comment = userCommentRepository.
                 findById(userReplyDto.getCommentId()).
                 orElseThrow(()->new UserReplyException("UserReplyException !! comment is not exists with given comment id :" + userReplyDto.getCommentId()));
-        reply.setComment(comment);
+        reply.setParent(comment);
         reply.setUserProfile(userProfile);
         return replyServiceModelMapper.map(userReplyRepository.save(reply),UserReplyDto.class);
     }
@@ -60,21 +68,61 @@ public class UserReplyServiceImpl implements UserReplyService {
         NewFeedReply reply1 = userReplyRepository.
                 findById(userReplyDto.getReplyId()).
                 orElseThrow(()->new UserReplyException("UserReplyException !! reply is not exists with given reply id :" + userReplyDto.getReplyId()));
-        reply.setReply(reply1);
+        reply.setParent(reply1);
         reply.setUserProfile(userProfile);
-        reply.setComment(reply1.getComment());
         return replyServiceModelMapper.map(userReplyRepository.save(reply),UserReplyDto.class);
 
     }
 
     @Override
-    public List<UserReplyDto> getReplyByCommentId(Long id) {
-        return null;
+    public List<UserReplyDto> getReplyByCommentId(Long commentId,Long userId) {
+        UserProfile userProfile = userProfileRepository.
+                findByUserId(userId).
+                orElseThrow(() -> new UserReplyException("UserReplyException !! User is not exists with given id :" + userId));
+        NewFeedComment comment = userCommentRepository.findById(commentId).
+                orElseThrow(() -> new UserReplyException("UserReplyException !! not allow to reply on this comment id :" + commentId));;
+
+
+        return  userReplyRepository
+                .findAllByReplyableAndUserId(comment,userId)
+                .orElse(new ArrayList<>())
+                .stream()
+                .map(this::replyToDto)
+                .collect(Collectors.toList());
     }
 
-    @Override
-    public List<UserReplyDto> getReplyByReplyId(Long id) {
+    public UserReplyDto replyToDto(Object[] post) {
+        int index = 0;
+        if(post[index++] instanceof NewFeedReply reply){
+            UserReplyDto userReplyDto = this.replyServiceModelMapper.map(reply, UserReplyDto.class);
+            userReplyDto.setUserProfile(userModelMapper.map(userReplyDto.getUserProfile(), UserProfileDto.class));
+            userReplyDto.setUpVotes((Long) post[index++]);
+            userReplyDto.setDownVotes((Long) post[index++]);
+            userReplyDto.setLiked((Boolean) post[index++]);
+            userReplyDto.setDisLiked((Boolean) post[index++]);
+            if(post[index] instanceof Image){
+                userReplyDto.getUserProfile().setImage(this.imageModelMapper.map((Image) post[index], ImageDto.class));
+            }
+
+            return userReplyDto;
+        }
         return null;
+    }
+    @Override
+    public List<UserReplyDto> getReplyByReplyId(Long replyId,Long userId) {
+        UserProfile userProfile = userProfileRepository.
+                findByUserId(userId).
+                orElseThrow(() -> new UserReplyException("UserReplyException !! User is not exists with given id :" + userId));
+        NewFeedReply reply = userReplyRepository.findById(replyId).
+                orElseThrow(() -> new UserReplyException("UserReplyException !! not allow to reply on this reply id :" + replyId));;
+
+
+        return  userReplyRepository
+                .findAllByReplyableAndUserId(reply,userId)
+                .orElse(new ArrayList<>())
+                .stream()
+                .map(this::replyToDto)
+                .collect(Collectors.toList());
     }
     @Override
     public Votable getVotableOnComment(VoteOnReply voteOnReply) {
