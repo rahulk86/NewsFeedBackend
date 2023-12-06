@@ -50,10 +50,6 @@ public class UserServiceConfig {
             mapper.map(src -> LocalDateTime.now(),UserProfile::setCreatAt);
         });
 
-//        modelMapper.typeMap(UserProfile.class,UserProfileDto.class).addMappings(mapper->{
-//            mapper.using(authorities).map(UserProfile::ge,UserDto::setAuthorities);
-//        });
-
 
         return modelMapper;
     }

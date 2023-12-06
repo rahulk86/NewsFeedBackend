@@ -10,6 +10,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ImageDto {
-    private String contentType;
-    private byte[] data;
+    private String url;
 }

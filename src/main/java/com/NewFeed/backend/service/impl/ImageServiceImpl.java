@@ -41,7 +41,7 @@ public class ImageServiceImpl implements ImageService {
         newImage.setImageableId(imageable.getId());
         newImage.setImageableType(imageable.getClass().getSimpleName());
         newImage.setActive(1);
-        newImage.setCreateAt(LocalDateTime.now());;
+        newImage.setCreateAt(LocalDateTime.now());
         imageFileSystemRepository.save(imageRepository.save(newImage),multipartFile.getInputStream().readAllBytes());
     }
 }

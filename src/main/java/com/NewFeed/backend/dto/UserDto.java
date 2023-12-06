@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
+import java.util.Map;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,12 +16,19 @@ import java.util.Collection;
 @Setter
 @Builder
 @JsonDeserialize(using = UserDtoDeserializer.class)
-public class UserDto implements UserDetails {
+public class UserDto implements OAuth2User,UserDetails {
     private Long id;
     private String name ;
     private String email ;
     private String password ;
     private Collection<? extends GrantedAuthority> authorities;
+    private Map<String, Object> attributes;
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;

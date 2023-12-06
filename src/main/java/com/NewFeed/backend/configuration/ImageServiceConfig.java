@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.IOException;
+import java.util.Base64;
 
 @Configuration
 public class ImageServiceConfig {
@@ -18,17 +18,20 @@ public class ImageServiceConfig {
     @Bean
     public ModelMapper userImageServiceModelMapper() {
         ModelMapper modelMapper = new ModelMapper();
-        Converter<Image, byte[] > ImageToByte
-                = c -> {
+        Converter<Image, String > ImageToByte
+                = context-> {
             try {
-                return imageFileSystemRepository.findByImageFileSystem(c. getSource()).getContentAsByteArray();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                byte[] content = imageFileSystemRepository.findByImageFileSystem(context.getSource()).getContentAsByteArray();
+                return "data:" + context.getSource().getContentType() + ";base64," +
+                        Base64.getEncoder().encodeToString(content);
+            }
+            catch (Exception e) {
+                return context. getSource().getName();
             }
         };
 
         modelMapper.typeMap(Image.class, ImageDto.class).addMappings(mapper -> {
-            mapper.using(ImageToByte).map(image ->image,ImageDto::setData);
+            mapper.using(ImageToByte).map(image ->image,ImageDto::setUrl);
         });
         return modelMapper;
     }

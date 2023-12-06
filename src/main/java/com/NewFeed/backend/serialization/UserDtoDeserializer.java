@@ -41,6 +41,6 @@ public class UserDtoDeserializer extends StdDeserializer<UserDto> {
             authorities.add(new SimpleGrantedAuthority(authority));
         }
 
-        return new UserDto(id, username, email, password, authorities);
+        return new UserDto(id, username, email, password, authorities,null);
     }
 }

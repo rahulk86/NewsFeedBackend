@@ -14,7 +14,6 @@ import com.NewFeed.backend.service.RefreshTokenService;
 import com.NewFeed.backend.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -45,9 +44,9 @@ public class UserController {
     @Autowired
     RefreshTokenService refreshTokenService;
     @Autowired
-    private Logger logger;
-    @Autowired
     JwtService jwtService;
+
+
     @PostMapping("/follow")
     public  ResponseEntity<?> follow(@Valid  @RequestBody Follow follow,Authentication authentication){
         UserDto userDto = (UserDto) authentication.getPrincipal();
@@ -58,6 +57,7 @@ public class UserController {
                 build(),
                 HttpStatus.CREATED);
     }
+
     @PostMapping("/signup")
     public ResponseEntity<MessageResponse> signup(@Valid  @RequestBody SignUpRequest signUpRequest) {
         try{
@@ -85,8 +85,7 @@ public class UserController {
     public ResponseEntity<MessageResponse> createUser(@Valid  @RequestBody RegisterRequest registerRequest){
         try {
 
-            UserDto userDto = userService.createUser(UserDto
-                                                        .builder()
+            UserDto userDto = userService.createUser(UserDto.builder()
                                                         .email(registerRequest.getEmail())
                                                         .password(registerRequest.getPassword())
                                                         .name(registerRequest.getUsername())
@@ -106,6 +105,7 @@ public class UserController {
                                         HttpStatus.CONFLICT);
         }
     }
+
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshToken(HttpServletRequest request){
         try {
@@ -132,29 +132,14 @@ public class UserController {
         }
 
     }
+
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest jwtRequest) {
        try {
            Authentication authentication = this.doAuthenticate(jwtRequest.getEmail(), jwtRequest.getPassword());
            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-           UserDto userDetails             = (UserDto) authentication.getPrincipal();
-           Set<String> roles = userDetails
-                                   .getAuthorities()
-                                   .stream()
-                                   .map(GrantedAuthority::getAuthority)
-                                   .collect(Collectors.toSet());
-           ResponseCookie jwtCookie        = jwtService.generateJwtCookie(userDetails);
-           RefreshToken refreshToken       = refreshTokenService.createRefreshToken(userDetails);
-           ResponseCookie jwtRefreshCookie = jwtService.generateRefreshJwtCookie(refreshToken.getToken());
-
-           return ResponseEntity.ok()
-                   .header(HttpHeaders.SET_COOKIE, jwtRefreshCookie.toString())
-                   .body(LogInResponse
-                           .builder()
-                           .accessToken(jwtCookie.getValue())
-                           .roles(roles)
-                           .build());
+           return buildLoginResponse(authentication);
        }catch (DataIntegrityViolationException e){
            return new ResponseEntity<>(MessageResponse.
                    builder().
@@ -164,6 +149,43 @@ public class UserController {
        }
 
     }
+
+    @PostMapping("/oauth2")
+    public ResponseEntity<?> oauth2(Authentication authentication) {
+        try {
+            return buildLoginResponse(authentication);
+        }catch (DataIntegrityViolationException e){
+            return new ResponseEntity<>(MessageResponse.
+                    builder().
+                    message(e.getMessage()).
+                    build(),
+                    HttpStatus.CREATED);
+        }
+
+    }
+
+    private ResponseEntity<?> buildLoginResponse(Authentication authentication){
+        UserDto userDetails = (UserDto) authentication.getPrincipal();
+        Set<String> roles   = userDetails
+                                    .getAuthorities()
+                                    .stream()
+                                    .map(GrantedAuthority::getAuthority)
+                                    .collect(Collectors.toSet());
+
+        ResponseCookie jwtCookie        = jwtService.generateJwtCookie(userDetails);
+        RefreshToken refreshToken       = refreshTokenService.createRefreshToken(userDetails);
+        ResponseCookie jwtRefreshCookie = jwtService.generateRefreshJwtCookie(refreshToken.getToken());
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, jwtRefreshCookie.toString())
+                .body(LogInResponse
+                        .builder()
+                        .accessToken(jwtCookie.getValue())
+                        .roles(roles)
+                        .build());
+    }
+
+
     @PostMapping("/signout")
     public ResponseEntity<?> logoutUser(Authentication authentication) {
         UserDto userDto = (UserDto) authentication.getPrincipal();
