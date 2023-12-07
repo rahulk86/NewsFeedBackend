@@ -45,14 +45,13 @@ public class UserServiceImpl implements UserService {
         if (this.userRepository.existsByEmail(userDto.getEmail())) {
             throw new DataIntegrityViolationException("User already exists with given email : " + userDto.getEmail());
         }
-        Role role = roleRepository.findByName(ERole.ROLE_ADMIN).orElse(null);
-        if (role == null){
-            role = new Role();
-            role.setName(ERole.ROLE_ADMIN);
-            role.setCreatAt(LocalDateTime.now());
-            role.setActive(1);
-            role = roleRepository.save(role);
-        }
+        Role role = roleRepository.findByName(ERole.ROLE_ADMIN)
+                        .orElseGet(()->{Role newRole = new Role();
+                            newRole.setName(ERole.ROLE_ADMIN);
+                            newRole.setCreatAt(LocalDateTime.now());
+                            newRole.setActive(1);
+                            return roleRepository.save(newRole);
+                        });
 
         Set<Role> roles = new HashSet<>();
         roles.add(role);

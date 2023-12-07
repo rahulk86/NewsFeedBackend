@@ -1,5 +1,6 @@
 package com.NewFeed.backend.security;
 
+import com.NewFeed.backend.configuration.AppProperties;
 import com.NewFeed.backend.dto.UserDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -8,7 +9,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
@@ -24,15 +24,9 @@ import java.util.function.Function;
 public class JwtService {
     @Autowired
     Logger logger;
-    @Value("${bezkoder.app.jwtSecret}")
-    private String jwtSecret;
-    @Value("${bezkoder.app.jwtExpirationMs}")
-    private int jwtExpirationMs;
 
-    @Value("${bezkoder.app.jwtCookieName}")
-    private String jwtCookie;
-    @Value("${bezkoder.app.jwtRefreshCookieName}")
-    private String jwtRefreshCookie;
+    @Autowired
+    private AppProperties appProperties;
     public String getUserNameFromJwtToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
@@ -45,11 +39,11 @@ public class JwtService {
     }
     public ResponseCookie generateJwtCookie(UserDto userDto) {
         String jwt = generateJwtToken(userDto);
-        return generateJwtCookie(jwtCookie,jwt,"/api");
+        return generateJwtCookie(appProperties.getAuth().getJwtCookieName(),jwt,"/api");
     }
 
     public ResponseCookie generateRefreshJwtCookie(String refreshToken) {
-        return generateJwtCookie(jwtRefreshCookie, refreshToken, "/api/users/refreshtoken");
+        return generateJwtCookie(appProperties.getAuth().getJwtRefreshCookieName(), refreshToken, "/api/users/refreshtoken");
     }
     public ResponseCookie generateJwtCookie(String name,String jwt, String path) {
         Duration maxAge = Duration.ofDays(1);
@@ -65,11 +59,11 @@ public class JwtService {
         return cookie;
     }
     public String getJwtFromCookies(HttpServletRequest request) {
-        return getCookieValueByName(request, jwtCookie);
+        return getCookieValueByName(request, appProperties.getAuth().getJwtCookieName());
     }
 
     public String getJwtRefreshFromCookies(HttpServletRequest request) {
-        return getCookieValueByName(request, jwtRefreshCookie);
+        return getCookieValueByName(request, appProperties.getAuth().getJwtRefreshCookieName());
     }
 
     private String getCookieValueByName(HttpServletRequest request, String name) {
@@ -81,11 +75,11 @@ public class JwtService {
         }
     }
     public ResponseCookie getCleanJwtCookie() {
-        ResponseCookie cookie = ResponseCookie.from(jwtCookie, null).path("/api").build();
+        ResponseCookie cookie = ResponseCookie.from(appProperties.getAuth().getJwtCookieName(), null).path("/api").build();
         return cookie;
     }
     public ResponseCookie getCleanJwtRefreshCookie() {
-        ResponseCookie cookie = ResponseCookie.from(jwtRefreshCookie, null).path("/api/auth/refreshtoken").build();
+        ResponseCookie cookie = ResponseCookie.from(appProperties.getAuth().getJwtRefreshCookieName(), null).path("/api/auth/refreshtoken").build();
         return cookie;
     }
 
@@ -102,7 +96,8 @@ public class JwtService {
                 setClaims(claims).
                 setSubject((userDto.getUsername())).
                 setIssuedAt(new Date()).
-                setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)).
+                setExpiration(new Date((new Date()).getTime() + appProperties.getAuth().getJwtExpirationMs()
+                )).
                 signWith(key(), SignatureAlgorithm.HS256).
                 compact();
     }
@@ -123,7 +118,7 @@ public class JwtService {
         return false;
     }
     private Key key() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(appProperties.getAuth().getJwtSecret()));
     }
 
 

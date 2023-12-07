@@ -21,9 +21,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 @Configuration
 public class SecurityConfig {
 
@@ -45,6 +42,9 @@ public class SecurityConfig {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private AppProperties appProperties;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -83,14 +83,16 @@ public class SecurityConfig {
 
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.setAllowedOrigins(Collections.singletonList("http://localhost:3000")); // Replace with your actual frontend URL
-        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
+        corsConfiguration.setAllowCredentials(appProperties.getCors().isAllowCredentials());
+        corsConfiguration.setAllowedOrigins(appProperties.getCors().getAllowedOrigins());
+        corsConfiguration.setAllowedMethods(appProperties.getCors().getAllowedMethods());
+        corsConfiguration.setAllowedHeaders(appProperties.getCors().getAllowedHeaders());
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
-        return  source;
+        return source;
     }
+
 
     private void oauth2LoginConfig(OAuth2LoginConfigurer<HttpSecurity> oAuth2LoginConfigure){
         oAuth2LoginConfigure

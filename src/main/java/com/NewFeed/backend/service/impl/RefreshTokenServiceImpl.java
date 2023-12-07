@@ -1,5 +1,6 @@
 package com.NewFeed.backend.service.impl;
 
+import com.NewFeed.backend.configuration.AppProperties;
 import com.NewFeed.backend.dto.UserDto;
 import com.NewFeed.backend.exception.TokenRefreshException;
 import com.NewFeed.backend.modal.NewFeedUser;
@@ -11,7 +12,6 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,8 +20,8 @@ import java.util.UUID;
 
 @Service
 public class RefreshTokenServiceImpl implements RefreshTokenService {
-  @Value("${bezkoder.app.jwtRefreshExpirationMs}")
-  private Long refreshTokenDurationMs;
+  @Autowired
+  private AppProperties appProperties;
 
   @Autowired
   private RefreshTokenRepository refreshTokenRepository;
@@ -52,7 +52,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     RefreshToken refreshToken = new RefreshToken();
     LocalDateTime currentTime = LocalDateTime.now();
     refreshToken.setUser(newFeedUser);
-    refreshToken.setExpiryDate(currentTime.now().plus(refreshTokenDurationMs, ChronoUnit.MILLIS));
+    refreshToken.setExpiryDate(currentTime.now().plus(appProperties.getAuth().getJwtRefreshExpirationMs(), ChronoUnit.MILLIS));
     refreshToken.setToken(UUID.randomUUID().toString());
     refreshToken.setCreatAt(currentTime);
     refreshToken.setActive(1);

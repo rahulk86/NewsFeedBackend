@@ -14,17 +14,32 @@ import java.util.List;
 @ConfigurationProperties(prefix = "app")
 public class AppProperties {
     private final Auth auth ;
+    private  String path;
     private final OAuth2 oauth2;
+    private final Cors cors;
     public AppProperties(){
         auth = new Auth();
         oauth2 = new OAuth2();
+        cors = new Cors();
     }
 
     @Getter
     @Setter
     public static class Auth {
-        private String tokenSecret;
-        private long tokenExpirationMsec;
+        private String jwtCookieName;
+        private String jwtRefreshCookieName;
+        private String jwtSecret;
+        private long   jwtExpirationMs;
+        private long   jwtRefreshExpirationMs;
+    }
+
+    @Getter
+    @Setter
+    public static class Cors {
+        private boolean allowCredentials;
+        private List<String> allowedOrigins ;
+        private List<String> allowedMethods ;
+        private List<String> allowedHeaders ;
     }
 
     @Getter
