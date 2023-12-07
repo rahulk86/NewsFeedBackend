@@ -1,8 +1,8 @@
 package com.NewFeed.backend.service.impl;
 
+import com.NewFeed.backend.configuration.AWSS3Config.AmazonS3Bucket;
 import com.NewFeed.backend.modal.Image;
 import com.NewFeed.backend.modal.Imageable;
-import com.NewFeed.backend.repository.ImageFileSystemRepository;
 import com.NewFeed.backend.repository.ImageRepository;
 import com.NewFeed.backend.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +17,10 @@ import java.time.LocalDateTime;
 @Service
 public class ImageServiceImpl implements ImageService {
     @Autowired
-    private ImageFileSystemRepository imageFileSystemRepository;
-
-    @Autowired
     private ImageRepository imageRepository;
 
+    @Autowired
+    private AmazonS3Bucket amazonS3WithBucket;
 
     @Override
     public void save(Imageable imageable, MultipartFile multipartFile) throws IOException {
@@ -35,13 +34,15 @@ public class ImageServiceImpl implements ImageService {
             image.setActive(0);
             imageRepository.save(image);
         }
+
+        amazonS3WithBucket.putObject(multipartFile,imageable.getClass().getSimpleName()+" ID :"+imageable.getId());
+
         Image newImage = new Image();
-        newImage.setName(multipartFile.getOriginalFilename());
-        newImage.setContentType(multipartFile.getContentType());
+        newImage.setUrl(amazonS3WithBucket.getUrl());
         newImage.setImageableId(imageable.getId());
         newImage.setImageableType(imageable.getClass().getSimpleName());
         newImage.setActive(1);
-        newImage.setCreateAt(LocalDateTime.now());
-        imageFileSystemRepository.save(imageRepository.save(newImage),multipartFile.getInputStream().readAllBytes());
+        newImage.setCreatAt(LocalDateTime.now());
+        imageRepository.save(newImage);
     }
 }

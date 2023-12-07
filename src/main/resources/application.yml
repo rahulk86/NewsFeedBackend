@@ -45,7 +45,6 @@ spring:
               tokenUri: https://graph.facebook.com/v3.0/oauth/access_token
               userInfoUri: https://graph.facebook.com/v3.0/me?fields=id,first_name,middle_name,last_name,name,email,verified,is_verified,picture.width(250).height(250)
 app:
-    path: D:\\downloads\\NewFeedProject\\NewFeed.backend\\src\\main\\resources\\static\\NewFeedImage
     auth:
       jwtCookieName: bezkoder
       jwtRefreshCookieName: bezkoder-jwt-refresh
@@ -74,3 +73,10 @@ app:
         - http://newfeedrecatclone.s3-website-us-east-1.amazonaws.com/oauth2/redirect
         - myandroidapp://oauth2/redirect
         - myiosapp://oauth2/redirect
+aws:
+  accessKey: AKIASFOSMQUSJSNII3RV
+  secreteKey: 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
+  S3Bucket:
+   region: us-east-1
+   name: newfeedrecatclone
+

@@ -129,12 +129,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         userProfile = userProfileRepository.save(userProfile);
 
         Image newImage = new Image();
-        newImage.setName(oAuth2UserInfo.getImageUrl());
-        newImage.setContentType("url");
+        newImage.setUrl(oAuth2UserInfo.getImageUrl());
         newImage.setImageableId(userProfile.getId());
         newImage.setImageableType(userProfile.getClass().getSimpleName());
         newImage.setActive(1);
-        newImage.setCreateAt(LocalDateTime.now());
+        newImage.setCreatAt(LocalDateTime.now());
         imageRepository.save(newImage);
 
        return this.userRepository.save(newFeedUser);

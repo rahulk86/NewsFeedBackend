@@ -14,7 +14,6 @@ import java.util.List;
 @ConfigurationProperties(prefix = "app")
 public class AppProperties {
     private final Auth auth ;
-    private  String path;
     private final OAuth2 oauth2;
     private final Cors cors;
     public AppProperties(){
