@@ -74,8 +74,8 @@ app:
         - myandroidapp://oauth2/redirect
         - myiosapp://oauth2/redirect
 aws:
-  accessKey: AKIASFOSMQUSJSNII3RV
-  secreteKey: 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
+  accessKey: 
+  secreteKey: 
   S3Bucket:
    region: us-east-1
    name: newfeedrecatclone
