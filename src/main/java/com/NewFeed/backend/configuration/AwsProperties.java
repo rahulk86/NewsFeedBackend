@@ -10,8 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "aws")
 public class AwsProperties {
-    private String accessKey;
-    private String secreteKey;
     private S3Bucket s3Bucket;
     public AwsProperties(){
         s3Bucket = new S3Bucket();

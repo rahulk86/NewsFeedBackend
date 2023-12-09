@@ -28,6 +28,7 @@ public class AppProperties {
         private String jwtCookieName;
         private String jwtRefreshCookieName;
         private String jwtSecret;
+        private String cookieDomain;
         private long   jwtExpirationMs;
         private long   jwtRefreshExpirationMs;
     }

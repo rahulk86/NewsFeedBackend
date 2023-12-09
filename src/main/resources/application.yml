@@ -51,6 +51,7 @@ app:
       jwtSecret: ======================BezKoder=Spring===========================
       jwtExpirationMs: 86400000
       jwtRefreshExpirationMs: 86400000
+      cookieDomain: 3.26.57.190
     cors:
       allowCredentials: true
       allowedOrigins:
@@ -74,8 +75,6 @@ app:
         - myandroidapp://oauth2/redirect
         - myiosapp://oauth2/redirect
 aws:
-  accessKey: AKIASFOSMQUSJSNII3RV
-  secreteKey: 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
   S3Bucket:
    region: us-east-1
    name: newfeedrecatclone

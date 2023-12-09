@@ -1,9 +1,7 @@
 package com.NewFeed.backend.configuration;
 
 import com.NewFeed.backend.exception.AmazonS3WithBucketException;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.*;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -23,24 +21,26 @@ public class AWSS3Config {
     @Autowired
     private AwsProperties awsProperties;
 
+    private AWSCredentials getAWSCredentials(){
+        EnvironmentVariableCredentialsProvider provider = new EnvironmentVariableCredentialsProvider();
+        return provider.getCredentials();
+    }
     @Bean
-    public AmazonS3Bucket getS3Client(){
-        final AWSCredentials awsCredentials = new BasicAWSCredentials(awsProperties.getAccessKey()
-                                                                     ,awsProperties.getSecreteKey());
+    public AmazonS3Bucket getS3Client() {
         return AmazonS3Bucket
                 .builder()
                 .amazonS3(AmazonS3ClientBuilder
                         .standard()
-                        .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
+                        .withCredentials(DefaultAWSCredentialsProviderChain.getInstance())
                         .withRegion(awsProperties.getS3Bucket().getRegion())
                         .build())
                 .bucket(awsProperties.getS3Bucket().getName())
                 .build();
     }
-
     @Getter
     @Builder
     public static class AmazonS3Bucket {
+
         private String bucket;
         private String key;
         private AmazonS3 amazonS3;

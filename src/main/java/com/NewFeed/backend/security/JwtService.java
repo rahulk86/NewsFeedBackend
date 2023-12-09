@@ -50,7 +50,7 @@ public class JwtService {
         ResponseCookie cookie = ResponseCookie
                 .from(name, jwt)
                 .path("/")
-                .domain("localhost") // Set the domain (change as needed)
+                .domain(appProperties.getAuth().getCookieDomain()) // Set the domain (change as needed)
                 .maxAge(maxAge)
                 .httpOnly(true)
                 .secure(true) // Use secure flag if your application uses HTTPS
