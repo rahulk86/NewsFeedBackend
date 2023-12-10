@@ -43,20 +43,18 @@ public class JwtService {
     }
 
     public ResponseCookie generateRefreshJwtCookie(String refreshToken) {
-        return generateJwtCookie(appProperties.getAuth().getJwtRefreshCookieName(), refreshToken, "/api/users/refreshtoken");
+        return generateJwtCookie(appProperties.getAuth().getJwtRefreshCookieName(), refreshToken, "/api/users/refresh");
     }
     public ResponseCookie generateJwtCookie(String name,String jwt, String path) {
         Duration maxAge = Duration.ofDays(1);
-        ResponseCookie cookie = ResponseCookie
+        return ResponseCookie
                 .from(name, jwt)
-                .path("/")
-                .domain(appProperties.getAuth().getCookieDomain()) // Set the domain (change as needed)
+                .path(path)
                 .maxAge(maxAge)
                 .httpOnly(true)
-                .secure(true) // Use secure flag if your application uses HTTPS
                 .sameSite("None")
+                .secure(true)
                 .build();
-        return cookie;
     }
     public String getJwtFromCookies(HttpServletRequest request) {
         return getCookieValueByName(request, appProperties.getAuth().getJwtCookieName());

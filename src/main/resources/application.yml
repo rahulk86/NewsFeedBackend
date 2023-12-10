@@ -51,7 +51,6 @@ app:
       jwtSecret: ======================BezKoder=Spring===========================
       jwtExpirationMs: 86400000
       jwtRefreshExpirationMs: 86400000
-      cookieDomain: 3.26.57.190
     cors:
       allowCredentials: true
       allowedOrigins:
