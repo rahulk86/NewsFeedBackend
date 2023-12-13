@@ -19,19 +19,19 @@ jobs:
       - name: Login to docker hub
         run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
       - name: Build docker image
-        run: docker build -t /NewFeed.backend-0.0.1-SNAPSHOT
+        run: docker build -t rahultantisoftware555/newfeed
       - name: Publish image to docker hub
-        run: docker push /NewFeed.backend-0.0.1-SNAPSHOT:latest
+        run: docker push rahultantisoftware555/newfeed
   deploy:
     needs: build
     runs-on: [aws-ec2-newfeed]
     steps:
       - name: Pull Image from docker hub
-        run: docker pull in /NewFeed.backend-0.0.1-SNAPSHOT:latest
+        run: docker pull in rahultantisoftware555/newfeed
       - name: Delete old container
         run: docker rm -f newfeed-container
       - name: Run docker container
-        run: docker run -d -p 8086:8086 --name newfeed-container /NewFeed.backend-0.0.1-SNAPSHOT
+        run: docker run -d -p 8086:8086 --name newfeed-container rahultantisoftware555/newfeed
 
 
 
