@@ -25,11 +25,11 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public void save(Imageable imageable, MultipartFile multipartFile) throws IOException {
         Image image =  imageRepository
-                .findByImageableTypeAndImageableId(imageable
-                                                     .getClass()
-                                                     .getSimpleName(),
-                                                   imageable.getId())
-                .orElse(null);
+                        .findByImageableTypeAndImageableId(imageable
+                                                             .getClass()
+                                                             .getSimpleName(),
+                                                           imageable.getId())
+                        .orElse(null);
         if(image!=null && image.getActive()==1){
             image.setActive(0);
             imageRepository.save(image);

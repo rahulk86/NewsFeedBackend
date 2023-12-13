@@ -52,8 +52,6 @@ public class JwtService {
                 .path(path)
                 .maxAge(maxAge)
                 .httpOnly(true)
-                .sameSite("None")
-                .secure(true)
                 .build();
     }
     public String getJwtFromCookies(HttpServletRequest request) {
