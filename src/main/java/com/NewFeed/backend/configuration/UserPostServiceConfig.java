@@ -1,8 +1,8 @@
 package com.NewFeed.backend.configuration;
 
 import com.NewFeed.backend.dto.UserPostDto;
-import com.NewFeed.backend.modal.NewFeedComment;
-import com.NewFeed.backend.modal.NewFeedPost;
+import com.NewFeed.backend.modal.feed.NewFeedComment;
+import com.NewFeed.backend.modal.feed.NewFeedPost;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

@@ -1,12 +1,12 @@
 package com.NewFeed.backend.service.impl;
 
 import com.NewFeed.backend.exception.VoteException;
-import com.NewFeed.backend.modal.NewFeedUser;
-import com.NewFeed.backend.modal.Votable;
-import com.NewFeed.backend.modal.Vote;
-import com.NewFeed.backend.modal.VoteType;
-import com.NewFeed.backend.repository.UserRepository;
-import com.NewFeed.backend.repository.VoteRepository;
+import com.NewFeed.backend.modal.user.NewFeedUser;
+import com.NewFeed.backend.modal.feed.Votable;
+import com.NewFeed.backend.modal.feed.Vote;
+import com.NewFeed.backend.modal.feed.VoteType;
+import com.NewFeed.backend.repository.user.UserRepository;
+import com.NewFeed.backend.repository.user.feed.VoteRepository;
 import com.NewFeed.backend.service.VotableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

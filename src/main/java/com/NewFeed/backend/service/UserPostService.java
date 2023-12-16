@@ -2,7 +2,7 @@ package com.NewFeed.backend.service;
 
 import com.NewFeed.backend.dto.UserCommentDto;
 import com.NewFeed.backend.dto.UserPostDto;
-import com.NewFeed.backend.modal.NewFeedPost;
+import com.NewFeed.backend.modal.feed.NewFeedPost;
 
 import java.io.IOException;
 import java.util.List;

@@ -1,11 +1,11 @@
 package com.NewFeed.backend.service.impl;
 
 import com.NewFeed.backend.exception.AuthProviderException;
-import com.NewFeed.backend.modal.AuthProvider;
-import com.NewFeed.backend.modal.NewFeedUser;
-import com.NewFeed.backend.repository.AuthProviderRepository;
-import com.NewFeed.backend.repository.RoleRepository;
-import com.NewFeed.backend.repository.UserRepository;
+import com.NewFeed.backend.modal.auth.AuthProvider;
+import com.NewFeed.backend.modal.user.NewFeedUser;
+import com.NewFeed.backend.repository.auth.AuthProviderRepository;
+import com.NewFeed.backend.repository.user.RoleRepository;
+import com.NewFeed.backend.repository.user.UserRepository;
 import com.NewFeed.backend.security.oauth2.user.OAuth2UserInfo;
 import com.NewFeed.backend.service.AuthProviderService;
 import org.springframework.beans.factory.annotation.Autowired;

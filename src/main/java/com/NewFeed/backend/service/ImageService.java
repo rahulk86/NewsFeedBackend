@@ -1,6 +1,6 @@
 package com.NewFeed.backend.service;
 
-import com.NewFeed.backend.modal.Imageable;
+import com.NewFeed.backend.modal.image.Imageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

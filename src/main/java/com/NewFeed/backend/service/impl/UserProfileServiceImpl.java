@@ -4,11 +4,11 @@ import com.NewFeed.backend.dto.ImageDto;
 import com.NewFeed.backend.dto.UserDto;
 import com.NewFeed.backend.dto.UserProfileDto;
 import com.NewFeed.backend.exception.UserProfileException;
-import com.NewFeed.backend.modal.Image;
-import com.NewFeed.backend.modal.NewFeedUser;
-import com.NewFeed.backend.modal.UserProfile;
-import com.NewFeed.backend.repository.UserProfileRepository;
-import com.NewFeed.backend.repository.UserRepository;
+import com.NewFeed.backend.modal.image.Image;
+import com.NewFeed.backend.modal.user.NewFeedUser;
+import com.NewFeed.backend.modal.user.UserProfile;
+import com.NewFeed.backend.repository.user.UserProfileRepository;
+import com.NewFeed.backend.repository.user.UserRepository;
 import com.NewFeed.backend.service.UserProfileService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +26,21 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Autowired
     @Qualifier("userImageServiceModelMapper")
     private ModelMapper imageModelMapper;
+
+    @Override
+    public UserProfile getUserProfile(UserDto userDto){
+        NewFeedUser user = userRepository
+                .findByEmail(userDto.getEmail())
+                .orElseThrow(()-> new UserProfileException("UserProfileException!! User is not exists with given id :" + userDto.getEmail()));
+
+        return userProfileRepository
+                .findByUser(user)
+                .orElseThrow(()-> new UserProfileException("UserProfileException!! profile not exit for email id :" + userDto.getEmail()));
+
+    }
     @Override
     public UserProfile updateProfile(UserProfileDto userProfileDto) {
-
-        NewFeedUser user = userRepository
-                .findByEmail(userProfileDto.getUser().getEmail())
-                .orElseThrow(()-> new UserProfileException("UserProfileException!! User is not exists with given id :" + userProfileDto.getUser().getEmail()));
-
-        UserProfile userProfile = userProfileRepository
-                .findByUser(user)
-                .orElseThrow(()-> new UserProfileException("UserProfileException!! profile not exit for email id :" + userProfileDto.getUser().getEmail()));
+        UserProfile userProfile = getUserProfile(userProfileDto.getUser());
         userProfile.setAddress(userProfileDto.getAddress());
         userProfile.setGender(userProfileDto.getGender());
         userProfile.setPhoneNumber(userProfileDto.getPhoneNumber());

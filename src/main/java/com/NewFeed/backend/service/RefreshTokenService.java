@@ -1,7 +1,7 @@
 package com.NewFeed.backend.service;
 
 import com.NewFeed.backend.dto.UserDto;
-import com.NewFeed.backend.modal.RefreshToken;
+import com.NewFeed.backend.modal.auth.RefreshToken;
 
 public interface RefreshTokenService {
     RefreshToken getToken(String token);

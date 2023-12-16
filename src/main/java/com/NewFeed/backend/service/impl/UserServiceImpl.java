@@ -2,11 +2,15 @@ package com.NewFeed.backend.service.impl;
 
 
 import com.NewFeed.backend.dto.UserDto;
-import com.NewFeed.backend.modal.*;
-import com.NewFeed.backend.repository.FollowedRepository;
-import com.NewFeed.backend.repository.RoleRepository;
-import com.NewFeed.backend.repository.UserProfileRepository;
-import com.NewFeed.backend.repository.UserRepository;
+import com.NewFeed.backend.modal.feed.Followed;
+import com.NewFeed.backend.modal.user.ERole;
+import com.NewFeed.backend.modal.user.NewFeedUser;
+import com.NewFeed.backend.modal.user.Role;
+import com.NewFeed.backend.modal.user.UserProfile;
+import com.NewFeed.backend.repository.user.feed.FollowedRepository;
+import com.NewFeed.backend.repository.user.RoleRepository;
+import com.NewFeed.backend.repository.user.UserProfileRepository;
+import com.NewFeed.backend.repository.user.UserRepository;
 import com.NewFeed.backend.security.JwtService;
 import com.NewFeed.backend.service.UserService;
 import org.modelmapper.ModelMapper;

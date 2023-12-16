@@ -4,7 +4,7 @@ import com.NewFeed.backend.dto.UserCommentDto;
 import com.NewFeed.backend.dto.UserDto;
 import com.NewFeed.backend.exception.UserCommentException;
 import com.NewFeed.backend.exception.UserPostException;
-import com.NewFeed.backend.modal.Votable;
+import com.NewFeed.backend.modal.feed.Votable;
 import com.NewFeed.backend.payload.Request.CommentsByPost;
 import com.NewFeed.backend.payload.Request.VoteOnComments;
 import com.NewFeed.backend.payload.Response.MessageResponse;

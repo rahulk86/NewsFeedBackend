@@ -2,7 +2,7 @@ package com.NewFeed.backend.controller;
 
 import com.NewFeed.backend.dto.UserDto;
 import com.NewFeed.backend.exception.TokenRefreshException;
-import com.NewFeed.backend.modal.RefreshToken;
+import com.NewFeed.backend.modal.auth.RefreshToken;
 import com.NewFeed.backend.payload.Request.Follow;
 import com.NewFeed.backend.payload.Request.LoginRequest;
 import com.NewFeed.backend.payload.Request.RegisterRequest;

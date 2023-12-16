@@ -1,9 +1,9 @@
 package com.NewFeed.backend.service.impl;
 
 import com.NewFeed.backend.configuration.AWSS3Config.AmazonS3Bucket;
-import com.NewFeed.backend.modal.Image;
-import com.NewFeed.backend.modal.Imageable;
-import com.NewFeed.backend.repository.ImageRepository;
+import com.NewFeed.backend.modal.image.Image;
+import com.NewFeed.backend.modal.image.Imageable;
+import com.NewFeed.backend.repository.image.ImageRepository;
 import com.NewFeed.backend.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

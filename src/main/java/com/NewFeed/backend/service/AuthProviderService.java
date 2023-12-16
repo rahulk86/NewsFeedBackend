@@ -1,6 +1,6 @@
 package com.NewFeed.backend.service;
 
-import com.NewFeed.backend.modal.AuthProvider;
+import com.NewFeed.backend.modal.auth.AuthProvider;
 import com.NewFeed.backend.security.oauth2.user.OAuth2UserInfo;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 

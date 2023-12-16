@@ -2,9 +2,9 @@ package com.NewFeed.backend.configuration;
 
 import com.NewFeed.backend.dto.UserDto;
 import com.NewFeed.backend.dto.UserProfileDto;
-import com.NewFeed.backend.modal.NewFeedUser;
-import com.NewFeed.backend.modal.Role;
-import com.NewFeed.backend.modal.UserProfile;
+import com.NewFeed.backend.modal.user.NewFeedUser;
+import com.NewFeed.backend.modal.user.Role;
+import com.NewFeed.backend.modal.user.UserProfile;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

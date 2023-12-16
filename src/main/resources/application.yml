@@ -58,6 +58,7 @@ app:
       allowCredentials: true
       allowedOrigins:
         - http://localhost:3000
+        - http://3.27.142.109:3000
         - http://192.168.29.228:3000
         - http://newfeedrecatclone.s3-website-us-east-1.amazonaws.com
       allowedMethods:

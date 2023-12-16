@@ -2,7 +2,7 @@ package com.NewFeed.backend.security.oauth2.user;
 
 
 import com.NewFeed.backend.exception.OAuth2AuthenticationProcessingException;
-import com.NewFeed.backend.modal.AuthProviderType;
+import com.NewFeed.backend.modal.auth.AuthProviderType;
 
 import java.util.Map;
 

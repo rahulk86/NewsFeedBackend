@@ -15,7 +15,5 @@ public class NewFeedTextContent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
     protected LocalDateTime creatAt;
-    @ManyToOne
-    protected UserProfile userProfile;
     protected String text;
 }

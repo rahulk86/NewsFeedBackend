@@ -4,7 +4,7 @@ import com.NewFeed.backend.dto.UserDto;
 import com.NewFeed.backend.dto.UserProfileDto;
 import com.NewFeed.backend.exception.UserPostException;
 import com.NewFeed.backend.exception.UserProfileException;
-import com.NewFeed.backend.modal.Imageable;
+import com.NewFeed.backend.modal.image.Imageable;
 import com.NewFeed.backend.payload.Response.MessageResponse;
 import com.NewFeed.backend.service.ImageService;
 import com.NewFeed.backend.service.UserProfileService;

@@ -3,7 +3,7 @@ package com.NewFeed.backend.service;
 import com.NewFeed.backend.dto.UserCommentDto;
 import com.NewFeed.backend.dto.UserDto;
 import com.NewFeed.backend.dto.UserReplyDto;
-import com.NewFeed.backend.modal.Votable;
+import com.NewFeed.backend.modal.feed.Votable;
 import com.NewFeed.backend.payload.Request.VoteOnComments;
 
 import java.util.List;

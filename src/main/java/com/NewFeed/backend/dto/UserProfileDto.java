@@ -1,6 +1,6 @@
 package com.NewFeed.backend.dto;
 
-import com.NewFeed.backend.modal.GenderType;
+import com.NewFeed.backend.modal.user.GenderType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
