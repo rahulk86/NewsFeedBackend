@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 @Entity
 public class Image extends BaseModel {
-//    private String contentType;
     private String imageableType;
     private Long imageableId;
     private String url;

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users/profile")
@@ -31,6 +32,22 @@ public class UserProfileController {
             UserDto principal = (UserDto) authentication.getPrincipal();
             UserProfileDto profile = userProfileService.getProfile(principal);
             return ResponseEntity.ok(profile);
+        }
+        catch (UserProfileException e){
+            return new ResponseEntity<>(MessageResponse.
+                    builder().
+                    message(e.getMessage()).
+                    build(),
+                    HttpStatus.NOT_FOUND);
+        }
+
+    }
+    @GetMapping("/getAll")
+    public ResponseEntity<?> getAllProfile(Authentication authentication ){
+        try {
+            UserDto principal = (UserDto) authentication.getPrincipal();
+            List<UserProfileDto> profiles = userProfileService.getAllProfile(principal);
+            return ResponseEntity.ok(profiles);
         }
         catch (UserProfileException e){
             return new ResponseEntity<>(MessageResponse.

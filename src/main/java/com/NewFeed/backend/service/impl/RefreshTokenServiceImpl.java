@@ -1,6 +1,6 @@
 package com.NewFeed.backend.service.impl;
 
-import com.NewFeed.backend.configuration.AppProperties;
+import com.NewFeed.backend.configuration.security.AppProperties;
 import com.NewFeed.backend.dto.UserDto;
 import com.NewFeed.backend.exception.TokenRefreshException;
 import com.NewFeed.backend.modal.user.NewFeedUser;

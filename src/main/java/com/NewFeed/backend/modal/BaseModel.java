@@ -18,4 +18,8 @@ public class BaseModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
     protected LocalDateTime creatAt;
+    public BaseModel(){
+        this.active = 1;
+        this.creatAt = LocalDateTime.now();
+    }
 }

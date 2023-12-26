@@ -3,18 +3,16 @@ package com.NewFeed.backend.controller;
 import com.NewFeed.backend.dto.*;
 import com.NewFeed.backend.modal.messaging.GroupMessenger;
 import com.NewFeed.backend.modal.user.UserProfile;
-import com.NewFeed.backend.payload.Response.MessageResponse;
 import com.NewFeed.backend.service.UserProfileService;
 import com.NewFeed.backend.service.messaging.MessageService;
 import com.NewFeed.backend.service.messaging.MessengerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,40 +25,43 @@ public class MessengerController {
     private MessageService messageService;
     @Autowired
     private UserProfileService profileService;
+
     @GetMapping("/get")
     public ResponseEntity<?> getMessengers(Authentication authentication ){
-
-        List<MessengerDto> messengers = messengerService.getMessengers((UserDto) authentication.getPrincipal());
+        UserProfile user = profileService.getUserProfile((UserDto) authentication.getPrincipal());
+        List<MessengerDto> messengers = messengerService.getMessengers(user);
         return ResponseEntity.ok(messengers);
 
     }
+    @MessageMapping("/sendMessage/{messengerId}")
+    @SendTo("/topic/conversation/{messengerId}")
+    public ResponseEntity<?> sendMessage(@DestinationVariable Long messengerId, @RequestBody UserMessageDto message) {
+        return ResponseEntity.ok(message);
+    }
     @PostMapping("/createUserMessenger")
-    public ResponseEntity<?> createUserMessenger(Authentication authentication , UserProfileDto profile){
+    public ResponseEntity<?> createUserMessenger(Authentication authentication , @RequestBody UserProfileDto profile){
         UserProfile sender = profileService.getUserProfile((UserDto) authentication.getPrincipal());
         UserProfile receiver = profileService.getUserProfile(profile.getUser());
-        messengerService.createUserMessenger(sender,receiver);
-        return new ResponseEntity<>(MessageResponse
-                                            .builder()
-                                            .message("UserMessenger created successfully")
-                                            .build()
-                                    , HttpStatus.CREATED);
+        MessengerDto userMessenger = messengerService.createUserMessenger(sender, receiver);
+        userMessenger.setImage(profile.getImage());
+        return  ResponseEntity.ok(userMessenger);
     }
 
     @PostMapping("/createGroup")
-    public ResponseEntity<?> createGroup(Authentication authentication , UserProfileDto profile){
+    public ResponseEntity<?> createGroup(Authentication authentication , @RequestBody UserProfileDto profile){
         UserProfile sender = profileService.getUserProfile((UserDto) authentication.getPrincipal());
         GroupMessenger groupMessenger = messengerService.createGroupMessenger(sender, profile);
         return ResponseEntity.ok(groupMessenger);
     }
     @GetMapping("/userConversation")
-    public ResponseEntity<?> startUserConversation(MessengerDto messengerDto,Authentication authentication ){
+    public ResponseEntity<?> startUserConversation(@RequestBody MessengerDto messengerDto,Authentication authentication ){
         UserDto principal = (UserDto) authentication.getPrincipal();
         List<UserMessageDto> userMessages = messageService.getUserMessages(messengerDto);
         return ResponseEntity.ok(userMessages);
     }
 
     @GetMapping("/groupConversation")
-    public ResponseEntity<?> startGroupConversation(MessengerDto messengerDto,Authentication authentication ){
+    public ResponseEntity<?> startGroupConversation(@RequestBody MessengerDto messengerDto,Authentication authentication ){
         UserDto principal = (UserDto) authentication.getPrincipal();
         List<GroupMessageDto> groupMessages = messageService.getGroupMessages(messengerDto);
         return ResponseEntity.ok(groupMessages);

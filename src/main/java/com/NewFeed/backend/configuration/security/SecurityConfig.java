@@ -1,4 +1,4 @@
-package com.NewFeed.backend.configuration;
+package com.NewFeed.backend.configuration.security;
 
 import com.NewFeed.backend.security.JwtAuthenticationEntryPoint;
 import com.NewFeed.backend.security.JwtAuthenticationFilter;
@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,6 +23,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
 
@@ -59,20 +61,16 @@ public class SecurityConfig {
                 authorizeHttpRequests(auth->auth.
                                 requestMatchers("/home/**").
                                 authenticated().
-                                requestMatchers("/api/users/login").
+                                requestMatchers("/wb/**").
                                 permitAll().
-                                requestMatchers("/api/users/signup").
-                                permitAll().
-                                requestMatchers("/api/users/register").
-                                permitAll().
-                                requestMatchers("/api/users/refresh").
+                                requestMatchers("/api/users/**").
                                 permitAll().
                                 anyRequest().
                                 authenticated()
                         ).
                         oauth2Login(this::oauth2LoginConfig).
-                        exceptionHandling(excep->excep.authenticationEntryPoint(jwtAuthenticationEntryPoint)).
-                        sessionManagement(sesion->sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                        exceptionHandling(except->except.authenticationEntryPoint(jwtAuthenticationEntryPoint)).
+                        sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

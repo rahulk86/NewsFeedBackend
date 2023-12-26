@@ -7,7 +7,7 @@ import com.NewFeed.backend.modal.user.ERole;
 import com.NewFeed.backend.modal.user.NewFeedUser;
 import com.NewFeed.backend.modal.user.Role;
 import com.NewFeed.backend.modal.user.UserProfile;
-import com.NewFeed.backend.repository.user.feed.FollowedRepository;
+import com.NewFeed.backend.repository.feed.FollowedRepository;
 import com.NewFeed.backend.repository.user.RoleRepository;
 import com.NewFeed.backend.repository.user.UserProfileRepository;
 import com.NewFeed.backend.repository.user.UserRepository;

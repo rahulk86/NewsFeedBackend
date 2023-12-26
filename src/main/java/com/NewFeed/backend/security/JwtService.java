@@ -1,6 +1,6 @@
 package com.NewFeed.backend.security;
 
-import com.NewFeed.backend.configuration.AppProperties;
+import com.NewFeed.backend.configuration.security.AppProperties;
 import com.NewFeed.backend.dto.UserDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;

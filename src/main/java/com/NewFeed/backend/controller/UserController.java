@@ -3,7 +3,6 @@ package com.NewFeed.backend.controller;
 import com.NewFeed.backend.dto.UserDto;
 import com.NewFeed.backend.exception.TokenRefreshException;
 import com.NewFeed.backend.modal.auth.RefreshToken;
-import com.NewFeed.backend.payload.Request.Follow;
 import com.NewFeed.backend.payload.Request.LoginRequest;
 import com.NewFeed.backend.payload.Request.RegisterRequest;
 import com.NewFeed.backend.payload.Request.SignUpRequest;
@@ -46,17 +45,6 @@ public class UserController {
     @Autowired
     JwtService jwtService;
 
-
-    @PostMapping("/follow")
-    public  ResponseEntity<?> follow(@Valid  @RequestBody Follow follow,Authentication authentication){
-        UserDto userDto = (UserDto) authentication.getPrincipal();
-        userService.follow(userDto,follow.getUserId());
-        return new ResponseEntity<>(MessageResponse.
-                builder().
-                message("followed successfully").
-                build(),
-                HttpStatus.CREATED);
-    }
 
     @PostMapping("/signup")
     public ResponseEntity<MessageResponse> signup(@Valid  @RequestBody SignUpRequest signUpRequest) {
@@ -183,23 +171,6 @@ public class UserController {
                         .accessToken(jwtCookie.getValue())
                         .roles(roles)
                         .build());
-    }
-
-
-    @PostMapping("/signout")
-    public ResponseEntity<?> logoutUser(Authentication authentication) {
-        UserDto userDto = (UserDto) authentication.getPrincipal();
-        refreshTokenService.deleteToken(userDto);
-        ResponseCookie jwtCookie        = jwtService.getCleanJwtCookie();
-        ResponseCookie jwtRefreshCookie = jwtService.getCleanJwtRefreshCookie();
-
-        return ResponseEntity
-                    .ok()
-                    .header(HttpHeaders.SET_COOKIE, jwtRefreshCookie.toString())
-                    .body(MessageResponse.
-                            builder().
-                            message("You've been signed out!").
-                            build());
     }
 
     private Authentication doAuthenticate(String email, String password) {

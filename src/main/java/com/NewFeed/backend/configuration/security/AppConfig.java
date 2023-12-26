@@ -1,4 +1,4 @@
-package com.NewFeed.backend.configuration;
+package com.NewFeed.backend.configuration.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

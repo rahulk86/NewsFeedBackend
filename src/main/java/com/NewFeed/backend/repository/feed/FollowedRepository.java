@@ -1,4 +1,4 @@
-package com.NewFeed.backend.repository.user.feed;
+package com.NewFeed.backend.repository.feed;
 
 import com.NewFeed.backend.modal.feed.Followed;
 import com.NewFeed.backend.modal.user.NewFeedUser;

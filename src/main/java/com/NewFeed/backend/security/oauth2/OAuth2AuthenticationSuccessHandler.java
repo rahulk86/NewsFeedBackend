@@ -1,6 +1,6 @@
 package com.NewFeed.backend.security.oauth2;
 
-import com.NewFeed.backend.configuration.AppProperties;
+import com.NewFeed.backend.configuration.security.AppProperties;
 import com.NewFeed.backend.dto.UserDto;
 import com.NewFeed.backend.exception.BadRequestException;
 import com.NewFeed.backend.security.CookieUtils;

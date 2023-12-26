@@ -6,7 +6,7 @@ import com.NewFeed.backend.modal.feed.Votable;
 import com.NewFeed.backend.modal.feed.Vote;
 import com.NewFeed.backend.modal.feed.VoteType;
 import com.NewFeed.backend.repository.user.UserRepository;
-import com.NewFeed.backend.repository.user.feed.VoteRepository;
+import com.NewFeed.backend.repository.feed.VoteRepository;
 import com.NewFeed.backend.service.VotableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

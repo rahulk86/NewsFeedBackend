@@ -27,9 +27,7 @@ public class MessengerConfig {
         Converter<UserProfile, String > userName
                 = c -> c. getSource()==null?null:c.getSource().getUser().getName();
         modelMapper.typeMap(UserMessenger.class, MessengerDto.class).addMappings(mapper -> {
-            mapper.using(groupMessengerId).map(UserMessenger::getMessenger,MessengerDto::setId);
-            mapper.using(groupMessengerType).map(UserMessenger::getMessenger,MessengerDto::setType);
-            mapper.using(userName).map(UserMessenger::getSender,MessengerDto::setName);
+            mapper.using(userName).map(UserMessenger::getProfile,MessengerDto::setName);
         });
 
 

@@ -1,4 +1,4 @@
-package com.NewFeed.backend.configuration;
+package com.NewFeed.backend.configuration.security;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserProfileServiceImpl implements UserProfileService {
     @Autowired
@@ -26,6 +28,10 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Autowired
     @Qualifier("userImageServiceModelMapper")
     private ModelMapper imageModelMapper;
+
+    @Autowired
+    @Qualifier("userServiceModelMapper")
+    private ModelMapper userModelMapper;
 
     @Override
     public UserProfile getUserProfile(UserDto userDto){
@@ -59,6 +65,22 @@ public class UserProfileServiceImpl implements UserProfileService {
         Object[] profile = (Object[]) profileDetails[0];
         return  (UserProfile) profile[0];
     }
+
+    private UserProfileDto toUserProfileDto(Object[] profile){
+        UserProfile userProfile = (UserProfile) profile[0];
+        UserProfileDto userProfileDto = new UserProfileDto();
+        userProfileDto.setAddress(userProfile.getAddress());
+        userProfileDto.setGender(userProfile.getGender());
+        userProfileDto.setPhoneNumber(userProfile.getPhoneNumber());
+        userProfileDto.setDate(userProfile.getCreatAt());
+        userProfileDto.setUser(userModelMapper.map(userProfile.getUser(),UserDto.class));
+
+        Image image             = profile.length>1?(Image) profile[1]:null;
+        if(image!=null){
+            userProfileDto.setImage(imageModelMapper.map(image, ImageDto.class));
+        }
+        return userProfileDto;
+    }
     @Override
     public UserProfileDto getProfile(UserDto userDto) {
         NewFeedUser user = userRepository
@@ -69,19 +91,18 @@ public class UserProfileServiceImpl implements UserProfileService {
                 .findByUserWithImage(user)
                 .orElseThrow(()-> new UserProfileException("UserProfileException!! profile not exit for email id :" + userDto.getEmail()));
         Object[] profile = (Object[]) profileDetails[0];
-        UserProfile userProfile = (UserProfile) profile[0];
-        UserProfileDto userProfileDto = new UserProfileDto();
-        userProfileDto.setUser(userDto);
-        userProfileDto.setAddress(userProfile.getAddress());
-        userProfileDto.setGender(userProfile.getGender());
-        userProfileDto.setPhoneNumber(userProfile.getPhoneNumber());
-        userProfileDto.setDate(userProfile.getCreatAt());
+        return toUserProfileDto(profile);
+    }
 
-        Image image             = profile.length>1?(Image) profile[1]:null;
-        if(image!=null){
-            userProfileDto.setImage(imageModelMapper.map(image, ImageDto.class));
-        }
-
-        return userProfileDto;
+    @Override
+    public List<UserProfileDto> getAllProfile(UserDto userDto) {
+        NewFeedUser user = userRepository
+                .findByEmail(userDto.getEmail())
+                .orElseThrow(()-> new UserProfileException("UserProfileException!! User is not exists with given id :" + userDto.getEmail()));
+        return userProfileRepository
+                .findAllByUserWithImage()
+                .stream()
+                .map(this::toUserProfileDto)
+                .toList();
     }
 }
