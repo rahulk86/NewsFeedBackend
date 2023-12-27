@@ -11,7 +11,7 @@ import lombok.Setter;
 @Entity
 public class GroupMember extends BaseModel {
     @ManyToOne
-    private GroupMessenger groupMessenger;
+    private GroupConversation conversation;
     @OneToOne
     private UserProfile profile;
     @Enumerated(EnumType.STRING)

@@ -16,4 +16,9 @@ public class NewFeedTextContent {
     private Long id ;
     protected LocalDateTime creatAt;
     protected String text;
+
+    public NewFeedTextContent(){
+        active = 1;
+        creatAt = LocalDateTime.now();
+    }
 }

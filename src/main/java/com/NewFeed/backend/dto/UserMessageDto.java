@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class UserMessageDto {
     private Long id ;
     private LocalDateTime creatAt;
+    private Long messengerId;
     private String text;
     private ImageDto image;
 }

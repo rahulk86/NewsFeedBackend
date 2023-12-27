@@ -7,9 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
-public class Messenger extends BaseModel {
-    private Long messengerId;
-    private String messengerType;
-}
+@Entity(name = "conversation")
+public class Conversation extends BaseModel {
 
+}

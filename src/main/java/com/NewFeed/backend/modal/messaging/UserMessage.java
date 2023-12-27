@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class Message extends NewFeedTextContent {
+public class UserMessage extends NewFeedTextContent {
     @ManyToOne
-    private Messenger messenger;
+    private UserMessenger messenger;
 }

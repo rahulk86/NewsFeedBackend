@@ -1,6 +1,7 @@
 package com.NewFeed.backend.configuration.webSocket;
 
 import com.NewFeed.backend.configuration.security.AppProperties;
+import com.NewFeed.backend.security.WebSocketAuthInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

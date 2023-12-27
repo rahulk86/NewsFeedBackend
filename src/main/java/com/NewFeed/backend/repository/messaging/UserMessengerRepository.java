@@ -25,18 +25,7 @@ public interface UserMessengerRepository extends JpaRepository<UserMessenger,Lon
                     " profileImage.imageableType = 'UserProfile' and" +
                     " profileImage.active = 1 " )
     List<Object[]> findAllByUser(UserProfile profile);
-//    @Query("select " +
-//            " messenger , " +
-//            " profileImage " +
-//            "from UserMessenger messenger " +
-//            "left join Image profileImage on profileImage.imageableId = messenger.sender.id and" +
-//            " profileImage.imageableType = 'UserProfile' and" +
-//            " profileImage.active = 1 " +
-//            "where messenger.receiver = ?1 " )
-//    List<Object[]> findAllByReceiver(UserProfile sender);
-//    @Query("SELECT u FROM UserMessenger u " +
-//            "WHERE (u.sender = :sender AND u.receiver = :receiver) OR " +
-//            "(u.sender = :receiver AND u.receiver = :sender)")
+
     Optional<UserMessenger> findByProfileAndConversation(
             @Param("profile") UserProfile profile,
             @Param("conversation") UserConversation conversation

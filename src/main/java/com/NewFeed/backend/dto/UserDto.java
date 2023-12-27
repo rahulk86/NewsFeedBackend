@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import java.security.Principal;
 import java.util.Collection;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ import java.util.Map;
 @Setter
 @Builder
 @JsonDeserialize(using = UserDtoDeserializer.class)
-public class UserDto implements OAuth2User,UserDetails {
+public class UserDto implements OAuth2User,UserDetails, Principal {
     private Long id;
     private String name ;
     private String email ;

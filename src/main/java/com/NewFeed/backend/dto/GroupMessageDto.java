@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 public class GroupMessageDto {
     private Long id ;
-    private MessengerDto messenger;
+    private GroupMemberDto groupMember;
     private LocalDateTime creatAt;
     private String text;
     private ImageDto image;

@@ -14,6 +14,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -33,10 +34,20 @@ public class MessengerController {
         return ResponseEntity.ok(messengers);
 
     }
-    @MessageMapping("/sendMessage/{messengerId}")
-    @SendTo("/topic/conversation/{messengerId}")
-    public ResponseEntity<?> sendMessage(@DestinationVariable Long messengerId, @RequestBody UserMessageDto message) {
-        return ResponseEntity.ok(message);
+    @MessageMapping("/sendMessage/{conversationId}")
+    @SendTo("/topic/conversation/{conversationId}")
+    public ResponseEntity<?> sendMessage(Principal principal,
+                                         @DestinationVariable Long conversationId,
+                                         @RequestBody UserMessageDto message) {
+        UserProfile profile = profileService.getUserProfile((UserDto) principal);
+        UserMessageDto userMessageDto = messageService.creatUserMessage(conversationId,profile,message);
+        return ResponseEntity.ok(userMessageDto);
+    }
+
+    @PostMapping("/getUserMessage")
+    public ResponseEntity<?> getUserMessage(@RequestBody MessengerDto messenger){
+        List<UserMessageDto> userMessages = messageService.getUserMessages(messenger);
+        return  ResponseEntity.ok(userMessages);
     }
     @PostMapping("/createUserMessenger")
     public ResponseEntity<?> createUserMessenger(Authentication authentication , @RequestBody UserProfileDto profile){
