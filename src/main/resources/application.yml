@@ -3,12 +3,9 @@ server:
 
 spring:
     datasource:
-#      url: jdbc:mysql://tabnewfeednew.cygxiwp4edin.ap-southeast-2.rds.amazonaws.com:8692/newfeed
-#      username: rahul86
-#      password: Rahul#123
-      url: jdbc:mysql://localhost:3306/tabnewfeednew
-      username: root
-      password: Rahul@123
+      url: jdbc:mysql://tabnewfeednew.cygxiwp4edin.ap-southeast-2.rds.amazonaws.com:8692/newfeed
+      username: rahul86
+      password: Rahul#123
     jpa:
         show-sql: true
         hibernate:
