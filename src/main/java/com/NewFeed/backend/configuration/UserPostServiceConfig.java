@@ -8,11 +8,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Configuration
 public class UserPostServiceConfig {
+
     @Bean
     public ModelMapper userPostServiceModelMapper() {
        ModelMapper modelMapper = new ModelMapper();
@@ -27,7 +27,6 @@ public class UserPostServiceConfig {
 
         modelMapper.typeMap(UserPostDto.class, NewFeedPost.class).addMappings(mapper -> {
             mapper.map(src->1,NewFeedPost::setActive);
-            mapper.map(src -> LocalDateTime.now(),NewFeedPost::setCreatAt);
         });
         return modelMapper;
     }

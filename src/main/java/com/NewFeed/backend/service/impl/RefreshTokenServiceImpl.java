@@ -20,6 +20,7 @@ import java.util.UUID;
 
 @Service
 public class RefreshTokenServiceImpl implements RefreshTokenService {
+
   @Autowired
   private AppProperties appProperties;
 
@@ -50,9 +51,9 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
       refreshTokenRepository.delete(byUser);
     }
     RefreshToken refreshToken = new RefreshToken();
-    LocalDateTime currentTime = LocalDateTime.now();
+    LocalDateTime currentTime = appProperties.now();
     refreshToken.setUser(newFeedUser);
-    refreshToken.setExpiryDate(currentTime.now().plus(appProperties.getAuth().getJwtRefreshExpirationMs(), ChronoUnit.MILLIS));
+    refreshToken.setExpiryDate(currentTime.plus(appProperties.getAuth().getJwtRefreshExpirationMs(), ChronoUnit.MILLIS));
     refreshToken.setToken(UUID.randomUUID().toString());
     refreshToken.setCreatAt(currentTime);
     refreshToken.setActive(1);
@@ -62,7 +63,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
   @Override
   public RefreshToken verifyExpiration(RefreshToken token) {
-    if (token.getExpiryDate().compareTo(LocalDateTime.now()) < 0) {
+    if (token.getExpiryDate().compareTo(appProperties.now()) < 0) {
       refreshTokenRepository.delete(token);
       throw new TokenRefreshException(token.getToken(),"TokenRefreshException : Refresh token was expired. Please make a new signin request");
     }

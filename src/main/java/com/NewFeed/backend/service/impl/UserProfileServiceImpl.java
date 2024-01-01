@@ -1,5 +1,6 @@
 package com.NewFeed.backend.service.impl;
 
+import com.NewFeed.backend.configuration.security.AppProperties;
 import com.NewFeed.backend.dto.ImageDto;
 import com.NewFeed.backend.dto.UserDto;
 import com.NewFeed.backend.dto.UserProfileDto;
@@ -19,6 +20,9 @@ import java.util.List;
 
 @Service
 public class UserProfileServiceImpl implements UserProfileService {
+    @Autowired
+    private AppProperties appProperties;
+
     @Autowired
     private UserProfileRepository userProfileRepository;
 
@@ -48,6 +52,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     public UserProfile updateProfile(UserProfileDto userProfileDto) {
         UserProfile userProfile = getUserProfile(userProfileDto.getUser());
         userProfile.setAddress(userProfileDto.getAddress());
+        userProfile.setCreatAt(appProperties.now());
         userProfile.setGender(userProfileDto.getGender());
         userProfile.setPhoneNumber(userProfileDto.getPhoneNumber());
 

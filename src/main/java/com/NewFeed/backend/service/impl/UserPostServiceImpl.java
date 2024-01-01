@@ -1,6 +1,7 @@
 package com.NewFeed.backend.service.impl;
 
 
+import com.NewFeed.backend.configuration.security.AppProperties;
 import com.NewFeed.backend.dto.ImageDto;
 import com.NewFeed.backend.dto.UserCommentDto;
 import com.NewFeed.backend.dto.UserPostDto;
@@ -28,6 +29,8 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 public class UserPostServiceImpl implements UserPostService {
+    @Autowired
+    private AppProperties appProperties;
     @Autowired
     private UserPostRepository userPostRepository;
     @Autowired
@@ -58,6 +61,7 @@ public class UserPostServiceImpl implements UserPostService {
                                     findByUserId(userId).
                                     orElseThrow(() -> new UserPostException("UserPostException !! User is not exists with given id :" + userId));
         newFeedPost.setUserProfile(userProfile);
+        newFeedPost.setCreatAt(appProperties.now());
         return  userPostRepository.save(newFeedPost);
 
     }

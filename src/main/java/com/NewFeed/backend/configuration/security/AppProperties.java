@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +15,14 @@ import java.util.List;
 @Component
 @ConfigurationProperties(prefix = "app")
 public class AppProperties {
+    private String zoneId;
     private final Auth auth ;
     private final OAuth2 oauth2;
     private final Cors cors;
+
+    public LocalDateTime now(){
+        return LocalDateTime.now(ZoneId.of(zoneId));
+    }
     public AppProperties(){
         auth = new Auth();
         oauth2 = new OAuth2();

@@ -1,6 +1,9 @@
 package com.NewFeed.backend.modal;
 
-import jakarta.persistence.*;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,9 +19,4 @@ public class NewFeedTextContent {
     private Long id ;
     protected LocalDateTime creatAt;
     protected String text;
-
-    public NewFeedTextContent(){
-        active = 1;
-        creatAt = LocalDateTime.now();
-    }
 }

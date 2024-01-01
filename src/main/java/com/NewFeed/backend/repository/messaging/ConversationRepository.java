@@ -1,5 +1,6 @@
 package com.NewFeed.backend.repository.messaging;
 
+import com.NewFeed.backend.modal.messaging.Conversation;
 import com.NewFeed.backend.modal.messaging.UserConversation;
 import com.NewFeed.backend.modal.user.UserProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface ConversationRepository extends JpaRepository<UserConversation,Long> {
+public interface ConversationRepository extends JpaRepository<Conversation,Long> {
 
     @Query("select " +
             " reciverMessenger.conversation  " +

@@ -1,5 +1,6 @@
 package com.NewFeed.backend.service.impl;
 
+import com.NewFeed.backend.configuration.security.AppProperties;
 import com.NewFeed.backend.exception.VoteException;
 import com.NewFeed.backend.modal.user.NewFeedUser;
 import com.NewFeed.backend.modal.feed.Votable;
@@ -15,6 +16,8 @@ import java.time.LocalDateTime;
 
 @Service
 public class VotableServiceImpl implements VotableService {
+    @Autowired
+    private AppProperties appProperties;
     @Autowired
     VoteRepository voteRepository;
     @Autowired
@@ -38,7 +41,7 @@ public class VotableServiceImpl implements VotableService {
             Vote newVote = vote==null?new Vote():vote;
             newVote.setActive(1);
             newVote.setUser(user);
-            newVote.setCreatAt(LocalDateTime.now());
+            newVote.setCreatAt(appProperties.now());
             newVote.setVotableType(votable.getClass().getSimpleName());
             newVote.setVotableId(votable.getId());
             newVote.setVoteType(voteType);
@@ -54,7 +57,7 @@ public class VotableServiceImpl implements VotableService {
                 ).orElse(null);
         if(vote!=null && vote.getActive()!=0){
             vote.setActive(0);
-            vote.setCreatAt(LocalDateTime.now());
+            vote.setCreatAt(appProperties.now());
             voteRepository.save(vote);
 //            votable.unVote(voteType);
         }

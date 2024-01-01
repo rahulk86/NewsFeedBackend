@@ -1,6 +1,7 @@
 package com.NewFeed.backend.service.impl;
 
 import com.NewFeed.backend.configuration.AWSS3Config.AmazonS3Bucket;
+import com.NewFeed.backend.configuration.security.AppProperties;
 import com.NewFeed.backend.modal.image.Image;
 import com.NewFeed.backend.modal.image.Imageable;
 import com.NewFeed.backend.repository.image.ImageRepository;
@@ -11,11 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 @Transactional
 @Service
 public class ImageServiceImpl implements ImageService {
+    @Autowired
+    private AppProperties appProperties;
     @Autowired
     private ImageRepository imageRepository;
 
@@ -42,7 +44,7 @@ public class ImageServiceImpl implements ImageService {
         newImage.setImageableId(imageable.getId());
         newImage.setImageableType(imageable.getClass().getSimpleName());
         newImage.setActive(1);
-        newImage.setCreatAt(LocalDateTime.now());
+        newImage.setCreatAt(appProperties.now());
         imageRepository.save(newImage);
     }
 }

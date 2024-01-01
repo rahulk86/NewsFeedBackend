@@ -12,7 +12,7 @@ import lombok.Setter;
 public class GroupMember extends BaseModel {
     @ManyToOne
     private GroupConversation conversation;
-    @OneToOne
+    @ManyToOne
     private UserProfile profile;
     @Enumerated(EnumType.STRING)
     private GroupRole role;

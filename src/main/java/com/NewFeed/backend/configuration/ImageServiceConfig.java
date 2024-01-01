@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ImageServiceConfig {
+
     @Bean
     public ModelMapper userImageServiceModelMapper() {
         return new ModelMapper();

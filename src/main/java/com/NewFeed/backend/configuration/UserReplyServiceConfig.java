@@ -7,7 +7,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Configuration
@@ -24,7 +23,6 @@ public class UserReplyServiceConfig {
 
         modelMapper.typeMap(UserReplyDto.class, NewFeedReply.class).addMappings(mapper -> {
             mapper.map(src->1,NewFeedReply::setActive);
-            mapper.map(src -> LocalDateTime.now(),NewFeedReply::setCreatAt);
         });
         return modelMapper;
     }

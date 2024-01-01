@@ -1,6 +1,7 @@
 package com.NewFeed.backend.service.impl;
 
 
+import com.NewFeed.backend.configuration.security.AppProperties;
 import com.NewFeed.backend.dto.UserDto;
 import com.NewFeed.backend.modal.feed.Followed;
 import com.NewFeed.backend.modal.user.ERole;
@@ -22,12 +23,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
+    @Autowired
+    private AppProperties appProperties;
 
     @Autowired
     private UserRepository userRepository;
@@ -52,7 +54,7 @@ public class UserServiceImpl implements UserService {
         Role role = roleRepository.findByName(ERole.ROLE_ADMIN)
                         .orElseGet(()->{Role newRole = new Role();
                             newRole.setName(ERole.ROLE_ADMIN);
-                            newRole.setCreatAt(LocalDateTime.now());
+                            newRole.setCreatAt(appProperties.now());
                             newRole.setActive(1);
                             return roleRepository.save(newRole);
                         });
@@ -61,12 +63,13 @@ public class UserServiceImpl implements UserService {
         roles.add(role);
         NewFeedUser newFeedUser = this.modelMapper.map(userDto, NewFeedUser.class);
         newFeedUser.setRoles(roles);
+        newFeedUser.setCreatAt(appProperties.now());
         NewFeedUser user = this.userRepository.save(newFeedUser);
 
         UserProfile userProfile = new UserProfile();
         userProfile.setUser(user);
         userProfile.setActive(1);
-        userProfile.setCreatAt(LocalDateTime.now());
+        userProfile.setCreatAt(appProperties.now());
         userProfileRepository.save(userProfile);
 
         return  this.modelMapper.map(this.userRepository.save(newFeedUser), UserDto.class);
@@ -100,7 +103,7 @@ public class UserServiceImpl implements UserService {
         if(followed1==null) {
             Followed followed = new Followed();
             followed.setActive(1);
-            followed.setCreatAt(LocalDateTime.now());
+            followed.setCreatAt(appProperties.now());
             followed.setUser(user);
             followed.setFollowedUser(followedUser);
             followedRepository.save(followed);

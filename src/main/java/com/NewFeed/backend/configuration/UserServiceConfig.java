@@ -14,15 +14,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Configuration
 public class UserServiceConfig {
-
-
     @Bean
     public ModelMapper userServiceModelMapper() {
         ModelMapper modelMapper = new ModelMapper();
@@ -38,7 +35,6 @@ public class UserServiceConfig {
         modelMapper.typeMap(UserDto.class, NewFeedUser.class).addMappings(mapper -> {
             mapper.using(encodePassword).map(UserDto::getPassword,NewFeedUser::setPassword);
             mapper.map(src->1,NewFeedUser::setActive);
-            mapper.map(src -> LocalDateTime.now(),NewFeedUser::setCreatAt);
         });
 
         modelMapper.typeMap(NewFeedUser.class,UserDto.class).addMappings(mapper->{
@@ -47,7 +43,6 @@ public class UserServiceConfig {
 
         modelMapper.typeMap(UserProfileDto.class, UserProfile.class).addMappings(mapper -> {
             mapper.map(src->1,UserProfile::setActive);
-            mapper.map(src -> LocalDateTime.now(),UserProfile::setCreatAt);
         });
 
 

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 
 import java.security.Key;
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
@@ -84,15 +85,16 @@ public class JwtService {
     }
     private Boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
-        return expiration.before(new Date());
+        return expiration.before(Timestamp.valueOf(appProperties.now()));
     }
     public String generateJwtToken(UserDto userDto) {
         Map<String, Object> claims = new HashMap<>();
+
         return Jwts.builder().
                 setClaims(claims).
                 setSubject((userDto.getUsername())).
-                setIssuedAt(new Date()).
-                setExpiration(new Date((new Date()).getTime() + appProperties.getAuth().getJwtExpirationMs()
+                setIssuedAt(Timestamp.valueOf(appProperties.now())).
+                setExpiration(new Date((Timestamp.valueOf(appProperties.now())).getTime() + appProperties.getAuth().getJwtExpirationMs()
                 )).
                 signWith(key(), SignatureAlgorithm.HS256).
                 compact();

@@ -1,6 +1,7 @@
 package com.NewFeed.backend.security.oauth2;
 
 
+import com.NewFeed.backend.configuration.security.AppProperties;
 import com.NewFeed.backend.dto.UserDto;
 import com.NewFeed.backend.exception.OAuth2AuthenticationProcessingException;
 import com.NewFeed.backend.modal.auth.AuthProvider;
@@ -27,13 +28,14 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
+
+    @Autowired
+    private AppProperties appProperties;
     @Autowired
     private AuthProviderRepository authProviderRepository;
 
@@ -98,7 +100,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         AuthProvider authProvider = new AuthProvider();
         authProvider.setActive(1);
-        authProvider.setCreatAt(LocalDateTime.now());
+        authProvider.setCreatAt(appProperties.now());
         authProvider.setName(AuthProviderType.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()));
         authProvider.setProviderId(oAuth2UserInfo.getId());
         authProvider.setUser(user);
@@ -114,7 +116,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         if (role == null){
             role = new Role();
             role.setName(ERole.ROLE_ADMIN);
-            role.setCreatAt(LocalDateTime.now());
+            role.setCreatAt(appProperties.now());
             role.setActive(1);
             role = roleRepository.save(role);
         }
@@ -124,7 +126,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         NewFeedUser newFeedUser = new NewFeedUser();
         newFeedUser.setId(null);
         newFeedUser.setActive(1);
-        newFeedUser.setCreatAt(LocalDateTime.now());
+        newFeedUser.setCreatAt(appProperties.now());
         newFeedUser.setName(oAuth2UserInfo.getName());
         newFeedUser.setEmail(oAuth2UserInfo.getEmail());
         newFeedUser.setPassword(oAuth2UserInfo.getEmail());
@@ -134,7 +136,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         UserProfile userProfile = new UserProfile();
         userProfile.setUser(user);
         userProfile.setActive(1);
-        userProfile.setCreatAt(LocalDateTime.now());
+        userProfile.setCreatAt(appProperties.now());
 
         userProfile = userProfileRepository.save(userProfile);
 
@@ -143,7 +145,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         newImage.setImageableId(userProfile.getId());
         newImage.setImageableType(userProfile.getClass().getSimpleName());
         newImage.setActive(1);
-        newImage.setCreatAt(LocalDateTime.now());
+        newImage.setCreatAt(appProperties.now());
         imageRepository.save(newImage);
 
        return this.userRepository.save(newFeedUser);

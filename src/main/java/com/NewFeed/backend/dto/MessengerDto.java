@@ -13,5 +13,6 @@ public class MessengerDto {
     private ImageDto image;
     private Long conversationId;
     private String type;
-    private LocalDateTime lastUpdate;
+    private LocalDateTime creatAt;
+    private Long unreadMessages;
 }

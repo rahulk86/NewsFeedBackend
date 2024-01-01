@@ -1,5 +1,6 @@
 package com.NewFeed.backend.service.impl;
 
+import com.NewFeed.backend.configuration.security.AppProperties;
 import com.NewFeed.backend.dto.*;
 import com.NewFeed.backend.exception.UserCommentException;
 import com.NewFeed.backend.modal.feed.NewFeedComment;
@@ -23,6 +24,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserCommentServiceImpl implements UserCommentService {
+    @Autowired
+    private AppProperties appProperties;
     @Autowired
     UserCommentRepository userCommentRepository;
     @Autowired
@@ -51,7 +54,7 @@ public class UserCommentServiceImpl implements UserCommentService {
                 orElseThrow(() -> new UserCommentException("UserCommentException !! not allow to comment on this post id :" + userCommentDto.getPostId()));;
         newFeedComment.setParent(newFeedPost);
         newFeedComment.setUserProfile(userProfile);
-
+        newFeedComment.setCreatAt(appProperties.now());
         return this.commentModelMapper.map(userCommentRepository.save(newFeedComment),UserCommentDto.class);
     }
 
