@@ -67,6 +67,10 @@ public class MessengerServiceImpl implements MessengerService {
         UserMessenger userMessenger = (UserMessenger) messenger[0];
         MessengerDto messengerDto = messengerModelMapper.map(userMessenger, MessengerDto.class);
         messengerDto.setType(UserMessenger.class.getSimpleName());
+        buildMessengerImageCount(messengerDto,messenger);
+        return messengerDto;
+    }
+    private void buildMessengerImageCount(MessengerDto messengerDto,Object[] messenger){
         if(messenger.length>2 && (Long)messenger[1] != null) {
             messengerDto.setUnreadMessages((Long)messenger[1]);
             if((Image)messenger[2]!=null) {
@@ -77,15 +81,12 @@ public class MessengerServiceImpl implements MessengerService {
         }else if(messenger.length>1 ) {
             messengerDto.setUnreadMessages((Long)messenger[1]);
         }
-        return messengerDto;
     }
     private MessengerDto grouptoSenderMessengerDto(Object[] messenger){
         GroupMessenger userMessenger = (GroupMessenger) messenger[0];
         MessengerDto messengerDto = messengerModelMapper.map(userMessenger, MessengerDto.class);
         messengerDto.setType(GroupMessenger.class.getSimpleName());
-        if(messenger.length>1 && (Image)messenger[1] != null) {
-            messengerDto.setImage(imageModelMapper.map((Image)messenger[1],ImageDto.class));
-        }
+        buildMessengerImageCount(messengerDto,messenger);
         return messengerDto;
     }
 

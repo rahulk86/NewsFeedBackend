@@ -66,6 +66,7 @@ public class MessageServiceImp implements MessageService {
         GroupMessenger messenger =  messengerRepository
                                 .findById(messengerDto.getId())
                                 .orElseThrow(()->new MessageException("MessageException : messenger not fount with given id : "+messengerDto.getId()));
+
         return groupMessageRepository
                     .findByGroupConversation(messenger.getConversation())
                     .stream()
@@ -151,6 +152,14 @@ public class MessageServiceImp implements MessageService {
         message.setGroupMember(groupMember);
         message.setCreatAt(appProperties.now());
         GroupMessage message1 = groupMessageRepository.save(message);
+
+        GroupMessenger groupMessenger = messengerRepository
+                                            .findByConversation(groupMember.getConversation())
+                                            .orElse(null);
+        if(groupMessenger!=null) {
+            groupMessenger.setCreatAt(appProperties.now());
+            messengerRepository.save(groupMessenger);
+        }
 
         groupMemberRepository.findByConversation(groupMember.getConversation())
                 .stream()
