@@ -60,8 +60,10 @@ public class MessengerServiceImpl implements MessengerService {
                     .toList());
         return messengers;
     }
-
-
+   @Override
+   public Integer unreadMessenger(UserProfile profile){
+      return userMessengerRepository.countByProfile(profile);
+   }
 
     private MessengerDto toSenderMessengerDto(Object[] messenger){
         UserMessenger userMessenger = (UserMessenger) messenger[0];

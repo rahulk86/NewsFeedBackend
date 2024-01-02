@@ -72,6 +72,11 @@ public class MessengerController {
         return ResponseEntity.ok(groupMessage);
     }
 
+    @PostMapping("/unreadCount")
+    public ResponseEntity<?> unreadCount(Authentication authentication){
+        UserProfile profile                = profileService.getUserProfile((UserDto) authentication.getPrincipal());
+        return  ResponseEntity.ok(messengerService.unreadMessenger(profile));
+    }
     @PostMapping("/getUserMessage")
     public ResponseEntity<?> getUserMessage(Authentication authentication ,@RequestBody MessengerDto messenger){
         UserProfile profile                = profileService.getUserProfile((UserDto) authentication.getPrincipal());

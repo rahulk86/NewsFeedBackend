@@ -11,4 +11,5 @@ public interface MessengerService {
     MessengerDto  createUserMessenger( UserProfile sender,UserProfile receiver);
     MessengerDto createGroupMessenger(UserProfile sender,MessengerDto messenger,List<UserProfile> receiver) ;
     UpdateMessengerResponse updateMessengerTime(UserProfile profile, MessengerDto messenger);
+    Integer unreadMessenger(UserProfile profile);
 }
