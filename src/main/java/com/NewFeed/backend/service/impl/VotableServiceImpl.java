@@ -2,17 +2,16 @@ package com.NewFeed.backend.service.impl;
 
 import com.NewFeed.backend.configuration.security.AppProperties;
 import com.NewFeed.backend.exception.VoteException;
-import com.NewFeed.backend.modal.user.NewFeedUser;
 import com.NewFeed.backend.modal.feed.Votable;
 import com.NewFeed.backend.modal.feed.Vote;
 import com.NewFeed.backend.modal.feed.VoteType;
-import com.NewFeed.backend.repository.user.UserRepository;
+import com.NewFeed.backend.modal.user.NewFeedUser;
 import com.NewFeed.backend.repository.feed.VoteRepository;
+import com.NewFeed.backend.repository.user.UserRepository;
 import com.NewFeed.backend.service.VotableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class VotableServiceImpl implements VotableService {
@@ -22,6 +21,7 @@ public class VotableServiceImpl implements VotableService {
     VoteRepository voteRepository;
     @Autowired
     UserRepository userRepository;
+    @Transactional
     @Override
     public void upVote(Long userId, Votable votable) {
         NewFeedUser newFeedUser = userRepository.
@@ -63,6 +63,7 @@ public class VotableServiceImpl implements VotableService {
         }
     }
     @Override
+    @Transactional
     public void  downVote(Long userId, Votable votable) {
         NewFeedUser newFeedUser = userRepository.
                 findById(userId).

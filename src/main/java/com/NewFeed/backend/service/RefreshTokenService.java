@@ -8,5 +8,5 @@ public interface RefreshTokenService {
     RefreshToken createRefreshToken(UserDto userDto);
     RefreshToken verifyExpiration(RefreshToken token);
     UserDto getUser(String refreshToken);
-    int deleteToken(UserDto userDto);
+    void deleteToken(UserDto userDto);
 }

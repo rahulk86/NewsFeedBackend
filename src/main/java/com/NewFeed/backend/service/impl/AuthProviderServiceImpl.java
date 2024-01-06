@@ -11,6 +11,7 @@ import com.NewFeed.backend.service.AuthProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthProviderServiceImpl implements AuthProviderService {
@@ -24,6 +25,7 @@ public class AuthProviderServiceImpl implements AuthProviderService {
     @Autowired
     private AuthProviderRepository authProviderRepository;
     @Override
+    @Transactional
     public AuthProvider getAuthProvider(String email) {
 
         NewFeedUser user =  userRepository
@@ -36,6 +38,7 @@ public class AuthProviderServiceImpl implements AuthProviderService {
     }
 
     @Override
+    @Transactional
     public AuthProvider registerAuthProvider(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
         return null;
     }

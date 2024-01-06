@@ -8,7 +8,7 @@ import com.NewFeed.backend.payload.Response.GroupMessageResponse;
 import com.NewFeed.backend.payload.Response.UpdateMessengerResponse;
 import com.NewFeed.backend.payload.Response.UserMessageResponse;
 import com.NewFeed.backend.service.UserProfileService;
-import com.NewFeed.backend.service.impl.GroupMemberService;
+import com.NewFeed.backend.service.messaging.GroupMemberService;
 import com.NewFeed.backend.service.messaging.MessageService;
 import com.NewFeed.backend.service.messaging.MessengerService;
 import org.springframework.beans.factory.annotation.Autowired;

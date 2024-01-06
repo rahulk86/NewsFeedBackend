@@ -30,7 +30,7 @@ public interface UserMessengerRepository extends JpaRepository<UserMessenger,Lon
                "group by " +
               " reciverMessenger ,profileImage")
     List<Object[]> findAllByUser(UserProfile profile);
-    @Query("select count(message) " +
+    @Query("select COUNT(*) " +
             "from UserMessenger messenger " +
                 "inner join UserMessenger reciverMessenger on " +
                     " messenger.conversation = reciverMessenger.conversation and" +
@@ -43,7 +43,7 @@ public interface UserMessengerRepository extends JpaRepository<UserMessenger,Lon
                "group by " +
               " reciverMessenger " +
               " having count(message) > 0")
-    Integer  countByProfile(UserProfile profile);
+    List<Integer>  countByProfile(UserProfile profile);
 
     Optional<UserMessenger> findByProfileAndConversation(
             @Param("profile") UserProfile profile,

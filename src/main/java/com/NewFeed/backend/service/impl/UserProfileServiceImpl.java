@@ -15,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     private ModelMapper userModelMapper;
 
     @Override
+    @Transactional
     public UserProfile getUserProfile(UserDto userDto){
         NewFeedUser user = userRepository
                 .findByEmail(userDto.getEmail())
@@ -49,6 +51,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     }
     @Override
+    @Transactional
     public UserProfile updateProfile(UserProfileDto userProfileDto) {
         UserProfile userProfile = getUserProfile(userProfileDto.getUser());
         userProfile.setAddress(userProfileDto.getAddress());
@@ -60,6 +63,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
     @Override
+    @Transactional
     public UserProfile getImageable(UserDto userDto) {
         NewFeedUser user = userRepository
                 .findByEmail(userDto.getEmail())
@@ -87,6 +91,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         return userProfileDto;
     }
     @Override
+    @Transactional
     public UserProfileDto getProfile(UserDto userDto) {
         NewFeedUser user = userRepository
                 .findByEmail(userDto.getEmail())
@@ -100,6 +105,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
     @Override
+    @Transactional
     public List<UserProfileDto> getAllProfile(UserDto userDto) {
         NewFeedUser user = userRepository
                 .findByEmail(userDto.getEmail())

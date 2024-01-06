@@ -1,4 +1,4 @@
-package com.NewFeed.backend.service.impl;
+package com.NewFeed.backend.service.messaging;
 
 import com.NewFeed.backend.dto.GroupMemberDto;
 import com.NewFeed.backend.modal.messaging.GroupMember;

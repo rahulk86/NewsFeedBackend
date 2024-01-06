@@ -25,6 +25,7 @@ public class ImageServiceImpl implements ImageService {
     private AmazonS3Bucket amazonS3WithBucket;
 
     @Override
+    @Transactional
     public void save(Imageable imageable, MultipartFile multipartFile) throws IOException {
         Image image =  imageRepository
                         .findByImageableTypeAndImageableId(imageable

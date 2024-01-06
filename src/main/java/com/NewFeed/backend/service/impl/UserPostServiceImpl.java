@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Transactional
 @Service
 public class UserPostServiceImpl implements UserPostService {
     @Autowired
@@ -55,6 +54,7 @@ public class UserPostServiceImpl implements UserPostService {
     private  ModelMapper userModelMapper;
 
     @Override
+    @Transactional
     public NewFeedPost createPost(Long userId, UserPostDto userPostDto) throws IOException {
         NewFeedPost newFeedPost = this.postModelMapper.map(userPostDto, NewFeedPost.class);
         UserProfile userProfile = userProfileRepository.
@@ -68,6 +68,7 @@ public class UserPostServiceImpl implements UserPostService {
 
 
     @Override
+    @Transactional
     public List<UserPostDto> getPosts(Long id) {
         List<Object[]> byUserId = userPostRepository.
                 findByUserId(id).
@@ -80,6 +81,7 @@ public class UserPostServiceImpl implements UserPostService {
     }
 
     @Override
+    @Transactional
     public void validateComment(UserCommentDto userCommentDto) {
         NewFeedPost newFeedPost = userPostRepository.
                                     findById(userCommentDto.getPostId()).
@@ -91,19 +93,20 @@ public class UserPostServiceImpl implements UserPostService {
     }
 
     @Override
+    @Transactional
     public UserPostDto postToDto(Object[] post) {
         int index = 0;
-        if(post[index++] instanceof NewFeedPost feedPost){
+        if(post[0] instanceof NewFeedPost feedPost){
             UserPostDto userPostDto = this.postModelMapper.map(feedPost, UserPostDto.class);
             userPostDto.setUserProfile(userModelMapper.map(userPostDto.getUserProfile(), UserProfileDto.class));
             if(post[index] instanceof Image) {
-               userPostDto.setImage(this.imageModelMapper.map((Image)post[index++], ImageDto.class));
+               userPostDto.setImage(this.imageModelMapper.map((Image)post[1], ImageDto.class));
             }
-            userPostDto.setUpVote((Long) post[index++]);
-            userPostDto.setDownVote((Long) post[index++]);
-            userPostDto.setLiked((Boolean) post[index++]);
-            userPostDto.setDisLiked((Boolean) post[index++]);
-            if(post[index] instanceof Image){
+            userPostDto.setUpVote((Long) post[2]);
+            userPostDto.setDownVote((Long) post[3]);
+            userPostDto.setLiked((Boolean) post[4]);
+            userPostDto.setDisLiked((Boolean) post[5]);
+            if(post[6] instanceof Image){
                 userPostDto.getUserProfile().setImage(this.imageModelMapper.map((Image) post[index], ImageDto.class));
             }
 
@@ -113,6 +116,7 @@ public class UserPostServiceImpl implements UserPostService {
     }
 
     @Override
+    @Transactional
     public Object[] getPost(Long postId, Long userId) {
         Object[] objects = userPostRepository.
                 findById(postId, userId).

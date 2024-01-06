@@ -18,6 +18,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,7 @@ public class UserReplyServiceImpl implements UserReplyService {
     private  ModelMapper imageModelMapper;
 
     @Override
+    @Transactional
     public UserReplyDto createCommentReply(UserDto userDto, UserReplyDto userReplyDto) {
         NewFeedReply reply = replyServiceModelMapper.map(userReplyDto, NewFeedReply.class);
         UserProfile userProfile = userProfileRepository.
@@ -67,6 +69,7 @@ public class UserReplyServiceImpl implements UserReplyService {
     }
 
     @Override
+    @Transactional
     public UserReplyDto createReplyReply(UserDto userDto, UserReplyDto userReplyDto) {
         NewFeedReply reply = replyServiceModelMapper.map(userReplyDto, NewFeedReply.class);
         UserProfile userProfile = userProfileRepository.
@@ -84,6 +87,7 @@ public class UserReplyServiceImpl implements UserReplyService {
     }
 
     @Override
+    @Transactional
     public List<UserReplyDto> getReplyByCommentId(Long commentId,Long userId) {
         UserProfile userProfile = userProfileRepository.
                 findByUserId(userId).
@@ -118,6 +122,7 @@ public class UserReplyServiceImpl implements UserReplyService {
         return null;
     }
     @Override
+    @Transactional
     public List<UserReplyDto> getReplyByReplyId(Long replyId,Long userId) {
         UserProfile userProfile = userProfileRepository.
                 findByUserId(userId).
@@ -134,6 +139,7 @@ public class UserReplyServiceImpl implements UserReplyService {
                 .collect(Collectors.toList());
     }
     @Override
+    @Transactional
     public Votable getVotableOnComment(VoteOnReply voteOnReply) {
             userCommentRepository.
                 findById(voteOnReply.getCommentId()).
@@ -145,6 +151,7 @@ public class UserReplyServiceImpl implements UserReplyService {
     }
 
     @Override
+    @Transactional
     public void validateReply(UserReplyDto userReplyDto) {
         NewFeedReply reply = userReplyRepository.
                 findById(userReplyDto.getReplyId()).
@@ -156,6 +163,7 @@ public class UserReplyServiceImpl implements UserReplyService {
     }
 
     @Override
+    @Transactional
     public Votable getVotableOnReply(VoteOnReply voteOnReply) {
         return userReplyRepository.findById(voteOnReply.
                         getReplyId()).
@@ -163,6 +171,7 @@ public class UserReplyServiceImpl implements UserReplyService {
     }
 
     @Override
+    @Transactional
     public UserReplyDto votableToDto(Votable votable) {
         if(votable instanceof NewFeedReply){
             return  this.replyServiceModelMapper.map((NewFeedReply)votable, UserReplyDto.class);

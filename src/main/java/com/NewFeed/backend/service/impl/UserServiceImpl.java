@@ -47,6 +47,7 @@ public class UserServiceImpl implements UserService {
     private ModelMapper modelMapper;
 
     @Override
+    @Transactional
     public UserDto createUser(UserDto userDto) {
         if (this.userRepository.existsByEmail(userDto.getEmail())) {
             throw new DataIntegrityViolationException("User already exists with given email : " + userDto.getEmail());
@@ -76,6 +77,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void signup(UserDto userDto) {
         if (this.userRepository.existsByEmail(userDto.getEmail())) {
             throw new DataIntegrityViolationException("User already exists with given email : " + userDto.getEmail());
@@ -83,6 +85,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto getUserById(Long id) {
         NewFeedUser newFeedUser = this.userRepository.
                                      findById(id).
@@ -91,6 +94,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void follow(UserDto userDto, Long followedUserId) {
         NewFeedUser user = this.userRepository.
                 findById(userDto.getId()).

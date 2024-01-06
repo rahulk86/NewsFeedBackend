@@ -29,13 +29,17 @@ public class UserPostController {
     @PostMapping ("/create")
     public ResponseEntity<?> createPost(Authentication authentication,
                                         @RequestParam("text") String text,
-                                        @RequestParam("file") MultipartFile multipartFile){
+                                        @RequestParam(value = "file", required = false) MultipartFile multipartFile){
         try {
             UserPostDto userPostDto = new UserPostDto();
             userPostDto.setText(text);
             UserDto principal = (UserDto) authentication.getPrincipal();
             Imageable imageable = userPostService.createPost(principal.getId(), userPostDto);
-            imageService.save(imageable,multipartFile);
+
+            if (multipartFile != null && !multipartFile.isEmpty()) {
+                imageService.save(imageable, multipartFile);
+            }
+
             return new ResponseEntity<>(MessageResponse.
                     builder().
                     message("Post Created Successfully").

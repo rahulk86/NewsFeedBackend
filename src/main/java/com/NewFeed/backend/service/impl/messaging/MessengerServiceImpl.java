@@ -25,13 +25,16 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class MessengerServiceImpl implements MessengerService {
+
     @Autowired
     private AppProperties appProperties;
 
     @Autowired
     private GroupMemberRepository groupMemberRepository;
+
     @Autowired
     private GroupMessengerRepository groupMessengerRepository;
+
     @Autowired
     private UserMessengerRepository userMessengerRepository;
 
@@ -46,6 +49,7 @@ public class MessengerServiceImpl implements MessengerService {
     @Qualifier("userImageServiceModelMapper")
     private ModelMapper imageModelMapper;
     @Override
+    @Transactional
     public List<MessengerDto> getMessengers(UserProfile user) {
         List<MessengerDto> messengers = groupMessengerRepository
                                             .findAllByUser(user)
@@ -61,8 +65,13 @@ public class MessengerServiceImpl implements MessengerService {
         return messengers;
     }
    @Override
+   @Transactional
    public Integer unreadMessenger(UserProfile profile){
-      return userMessengerRepository.countByProfile(profile);
+       List<Integer> userUnreadI = userMessengerRepository.countByProfile(profile);
+       int userUnread = userUnreadI==null?0:userUnreadI.size();
+       List<Integer> groupUnreadI = groupMessengerRepository.countByProfile(profile);
+       int groupUnread = groupUnreadI==null?0:groupUnreadI.size();
+       return userUnread+groupUnread;
    }
 
     private MessengerDto toSenderMessengerDto(Object[] messenger){
@@ -146,6 +155,7 @@ public class MessengerServiceImpl implements MessengerService {
         groupMessenger.setConversation(conversationSave);
         groupMessenger.setCreatAt(appProperties.now());
         groupMessenger.setActive(1);
+        GroupMessenger save = groupMessengerRepository.save(groupMessenger);
 
         createGroupMember(sender,conversationSave,GroupRole.ROLE_ADMIN);
 
@@ -154,7 +164,7 @@ public class MessengerServiceImpl implements MessengerService {
         });
 
         MessengerDto messengerDto = messengerModelMapper
-                                        .map(groupMessengerRepository.save(groupMessenger),
+                                        .map(save,
                                              MessengerDto.class);
         messengerDto.setType(GroupMessenger.class.getSimpleName());
         return messengerDto;

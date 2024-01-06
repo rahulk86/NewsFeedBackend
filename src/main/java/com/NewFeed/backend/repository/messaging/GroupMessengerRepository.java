@@ -29,5 +29,19 @@ public interface GroupMessengerRepository extends JpaRepository<GroupMessenger,L
               "messenger,groupImage")
     List<Object[]> findAllByUser(UserProfile profile);
 
+    @Query("select COUNT(*) " +
+            "from GroupMessenger messenger " +
+                "inner join GroupMember member on " +
+                    " messenger.conversation = member.conversation and" +
+                    " member.profile = ?1 and" +
+                    " messenger.active = 1 and " +
+                    " member.active = 1 " +
+                "left join UnreadGroupMessage message on " +
+                    " message.member = member "+
+            "group by " +
+                 " messenger " +
+            " having count(message) > 0")
+    List<Integer>  countByProfile(UserProfile profile);
+
     Optional<GroupMessenger> findByConversation(GroupConversation conversation);
 }

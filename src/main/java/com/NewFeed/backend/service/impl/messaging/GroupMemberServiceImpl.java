@@ -8,7 +8,7 @@ import com.NewFeed.backend.modal.user.UserProfile;
 import com.NewFeed.backend.repository.messaging.ConversationRepository;
 import com.NewFeed.backend.repository.messaging.GroupMemberRepository;
 import com.NewFeed.backend.repository.messaging.UnreadGroupMessageRepository;
-import com.NewFeed.backend.service.impl.GroupMemberService;
+import com.NewFeed.backend.service.messaging.GroupMemberService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

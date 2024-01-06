@@ -17,6 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,7 @@ public class UserCommentServiceImpl implements UserCommentService {
     @Qualifier("userImageServiceModelMapper")
     private  ModelMapper imageModelMapper;
     @Override
+    @Transactional
     public UserCommentDto createComment(UserDto userDto,UserCommentDto userCommentDto) {
         NewFeedComment newFeedComment = this.commentModelMapper.map(userCommentDto, NewFeedComment.class);
         userDto.setPassword("");
@@ -59,6 +61,7 @@ public class UserCommentServiceImpl implements UserCommentService {
     }
 
     @Override
+    @Transactional
     public List<UserCommentDto> getCommentByPostId(Long userId, Long postId) {
         UserProfile userProfile = userProfileRepository.
                 findByUserId(userId).
@@ -94,6 +97,7 @@ public class UserCommentServiceImpl implements UserCommentService {
     }
 
     @Override
+    @Transactional
     public Votable getVotable(VoteOnComments voteOnComments) {
                userPostRepository.
                 findById(voteOnComments.getPostId()).
@@ -103,6 +107,7 @@ public class UserCommentServiceImpl implements UserCommentService {
                 orElseThrow(() -> new UserCommentException("UserCommentException !! comment is not exists with given comment id :" + voteOnComments.getCommentId()));
     }
     @Override
+    @Transactional
     public UserCommentDto votableToDto(Votable votable){
         if(votable instanceof NewFeedComment){
             return  this.commentModelMapper.map((NewFeedComment)votable, UserCommentDto.class);
@@ -111,6 +116,7 @@ public class UserCommentServiceImpl implements UserCommentService {
     }
 
     @Override
+    @Transactional
     public void validateComment(UserReplyDto userReplyDto) {
         NewFeedComment comment = userCommentRepository.
                 findById(userReplyDto.getCommentId()).
