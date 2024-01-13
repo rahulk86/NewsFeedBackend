@@ -2,12 +2,13 @@ package com.NewFeed.backend.security;
 
 import com.NewFeed.backend.configuration.security.AppProperties;
 import com.NewFeed.backend.dto.UserDto;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
@@ -23,8 +24,6 @@ import java.util.function.Function;
 
 @Component
 public class JwtService {
-    @Autowired
-    Logger logger;
 
     @Autowired
     private AppProperties appProperties;
@@ -83,10 +82,6 @@ public class JwtService {
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser().setSigningKey(key()).parseClaimsJws(token).getBody();
     }
-    private Boolean isTokenExpired(String token) {
-        final Date expiration = getExpirationDateFromToken(token);
-        return expiration.before(Timestamp.valueOf(appProperties.now()));
-    }
     public String generateJwtToken(UserDto userDto) {
         Map<String, Object> claims = new HashMap<>();
 
@@ -99,21 +94,9 @@ public class JwtService {
                 signWith(key(), SignatureAlgorithm.HS256).
                 compact();
     }
-    public boolean validateJwtToken(String authToken) {
-        try {
-           // Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
-            return !isTokenExpired(authToken);
-        } catch (MalformedJwtException e) {
-            logger.error("Invalid JWT token: {}", e.getMessage());
-        } catch (ExpiredJwtException e) {
-            logger.error("JWT token is expired: {}", e.getMessage());
-        } catch (UnsupportedJwtException e) {
-            logger.error("JWT token is unsupported: {}", e.getMessage());
-        } catch (IllegalArgumentException e) {
-            logger.error("JWT claims string is empty: {}", e.getMessage());
-        }
-
-        return false;
+    public void validateJwtToken(String authToken) {
+        final Date expiration = getExpirationDateFromToken(authToken);
+        expiration.before(Timestamp.valueOf(appProperties.now()));
     }
     private Key key() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(appProperties.getAuth().getJwtSecret()));

@@ -43,14 +43,10 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
   @Override
   @Transactional
-  public RefreshToken createRefreshToken(UserDto userDto) {
-    NewFeedUser newFeedUser = userRepository
-            .findByEmail(userDto.getEmail())
-            .orElseThrow(()->new TokenRefreshException("TokenRefreshException !! User is not exists with given email :" + userDto.getEmail()));
-    deleteToken(newFeedUser);
+  public RefreshToken createRefreshToken(NewFeedUser user) {
     RefreshToken refreshToken = new RefreshToken();
     LocalDateTime currentTime = appProperties.now();
-    refreshToken.setUser(newFeedUser);
+    refreshToken.setUser(user);
     refreshToken.setExpiryDate(currentTime.plus(appProperties.getAuth().getJwtRefreshExpirationMs(), ChronoUnit.MILLIS));
     refreshToken.setToken(UUID.randomUUID().toString());
     refreshToken.setCreatAt(currentTime);
@@ -84,19 +80,10 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
   }
 
   @Transactional
-  public void deleteToken(NewFeedUser newFeedUser) {
-    refreshTokenRepository
-            .findByUser(newFeedUser)
-            .ifPresent(byUser -> refreshTokenRepository.delete(byUser));
-
-  }
-  @Transactional
   @Override
-  public void deleteToken(UserDto userDto) {
-    NewFeedUser newFeedUser = userRepository
-            .findByEmail(userDto.getEmail())
-            .orElseThrow(()->new TokenRefreshException("TokenRefreshException !! User is not exists with given email :" + userDto.getEmail()));
-    deleteToken(newFeedUser);
-
+  public void deleteToken(NewFeedUser user) {
+    refreshTokenRepository
+            .findByUser(user)
+            .ifPresent(byUser -> refreshTokenRepository.delete(byUser));
   }
 }

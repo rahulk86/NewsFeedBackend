@@ -19,15 +19,12 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Autowired
-    WebSocketAuthInterceptor webSocketAuthInterceptor;
-
-    @Autowired
     private AppProperties appProperties;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/topic");
-        config.setApplicationDestinationPrefixes("/api/messenger");
+        config.setApplicationDestinationPrefixes("/api/messenger","/api/users");
     }
 
     @Override

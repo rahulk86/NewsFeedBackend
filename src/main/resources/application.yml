@@ -16,6 +16,17 @@ spring:
         properties:
             hibernate:
                 dialect: org.hibernate.dialect.MySQLDialect
+    mail:
+      host: smtp.gmail.com
+      port: 587
+      username: rahul.tanti.software@gmail.com
+      password: zxlj gadl fhpy povl
+      properties:
+        mail:
+          smtp:
+            auth: true
+            starttls:
+              enable: true
 
     security:
       oauth2:
@@ -53,7 +64,7 @@ app:
       jwtCookieName: bezkoder
       jwtRefreshCookieName: bezkoder-jwt-refresh
       jwtSecret: ======================BezKoder=Spring===========================
-      jwtExpirationMs: 86400000
+      jwtExpirationMs: 8640000
       jwtRefreshExpirationMs: 86400000
     cors:
       allowCredentials: true

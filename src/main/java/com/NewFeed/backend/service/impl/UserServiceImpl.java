@@ -7,10 +7,8 @@ import com.NewFeed.backend.modal.feed.Followed;
 import com.NewFeed.backend.modal.user.ERole;
 import com.NewFeed.backend.modal.user.NewFeedUser;
 import com.NewFeed.backend.modal.user.Role;
-import com.NewFeed.backend.modal.user.UserProfile;
 import com.NewFeed.backend.repository.feed.FollowedRepository;
 import com.NewFeed.backend.repository.user.RoleRepository;
-import com.NewFeed.backend.repository.user.UserProfileRepository;
 import com.NewFeed.backend.repository.user.UserRepository;
 import com.NewFeed.backend.security.JwtService;
 import com.NewFeed.backend.service.UserService;
@@ -33,13 +31,13 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private FollowedRepository followedRepository;
 
     @Autowired
-    private UserProfileRepository userProfileRepository;
-    @Autowired
     private JwtService tokensService;
+
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
@@ -49,9 +47,15 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto createUser(UserDto userDto) {
-        if (this.userRepository.existsByEmail(userDto.getEmail())) {
+        NewFeedUser newFeedUser1 = userRepository
+                                    .findByEmail(userDto.getEmail())
+                                    .orElse(null);
+        if(newFeedUser1!=null && newFeedUser1.getActive()==0){
+            return this.modelMapper.map(newFeedUser1, UserDto.class);
+        }else if(newFeedUser1!=null && newFeedUser1.getActive()==1){
             throw new DataIntegrityViolationException("User already exists with given email : " + userDto.getEmail());
         }
+
         Role role = roleRepository.findByName(ERole.ROLE_ADMIN)
                         .orElseGet(()->{Role newRole = new Role();
                             newRole.setName(ERole.ROLE_ADMIN);
@@ -65,21 +69,19 @@ public class UserServiceImpl implements UserService {
         NewFeedUser newFeedUser = this.modelMapper.map(userDto, NewFeedUser.class);
         newFeedUser.setRoles(roles);
         newFeedUser.setCreatAt(appProperties.now());
+        newFeedUser.setActive(0);
         NewFeedUser user = this.userRepository.save(newFeedUser);
 
-        UserProfile userProfile = new UserProfile();
-        userProfile.setUser(user);
-        userProfile.setActive(1);
-        userProfile.setCreatAt(appProperties.now());
-        userProfileRepository.save(userProfile);
-
-        return  this.modelMapper.map(this.userRepository.save(newFeedUser), UserDto.class);
+        return  this.modelMapper.map(user, UserDto.class);
     }
 
     @Override
     @Transactional
     public void signup(UserDto userDto) {
-        if (this.userRepository.existsByEmail(userDto.getEmail())) {
+        NewFeedUser user = userRepository
+                                .findByEmail(userDto.getEmail())
+                                .orElse(null);
+        if(user!=null && user.getActive()==1){
             throw new DataIntegrityViolationException("User already exists with given email : " + userDto.getEmail());
         }
     }
@@ -94,11 +96,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public NewFeedUser toNewFeedUser(UserDto userDto) {
+        return this.userRepository.
+                    findById(userDto.getId()).
+                    orElseThrow(() -> new DataIntegrityViolationException("User is not exists with given id : " + userDto.getId()));
+
+    }
+
+    @Override
     @Transactional
     public void follow(UserDto userDto, Long followedUserId) {
-        NewFeedUser user = this.userRepository.
-                findById(userDto.getId()).
-                orElseThrow(() -> new DataIntegrityViolationException("User is not exists with given id : " + userDto.getId()));
+        NewFeedUser user = toNewFeedUser(userDto);
         NewFeedUser followedUser = this.userRepository.
                 findById(followedUserId).
                 orElseThrow(() -> new DataIntegrityViolationException("User is not exists with given id : " +followedUserId));
@@ -114,12 +122,17 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         NewFeedUser newFeedUser = this.userRepository.
-                findByEmail(email).
-                orElseThrow(() -> new DataIntegrityViolationException("User is not exists with given email : " + email));
+                                        findByEmail(email).
+                                        orElse(null);
+        if(newFeedUser==null || newFeedUser.getActive()==0){
+          throw new DataIntegrityViolationException("User is not exists with given email : " + email);
+        }
+
         return this.modelMapper.map(newFeedUser, UserDto.class);
     }
 }

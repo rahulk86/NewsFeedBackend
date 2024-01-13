@@ -44,7 +44,7 @@ public class UserAuthController {
     @PostMapping("/signout")
     public ResponseEntity<?> logoutUser(Authentication authentication) {
         UserDto userDto = (UserDto) authentication.getPrincipal();
-        refreshTokenService.deleteToken(userDto);
+        refreshTokenService.deleteToken(userService.toNewFeedUser(userDto));
         ResponseCookie jwtRefreshCookie = jwtService.getCleanJwtRefreshCookie();
 
         return ResponseEntity

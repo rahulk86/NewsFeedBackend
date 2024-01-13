@@ -4,6 +4,7 @@ package com.NewFeed.backend.security;
 import com.NewFeed.backend.dto.UserDto;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,8 +32,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         String jwt = parseJwt(request);
-        if (jwt != null && jwtService.validateJwtToken(jwt)) {
+        if (jwt != null) {
             try {
+            jwtService.validateJwtToken(jwt);
             String username = jwtService.getUserNameFromJwtToken(jwt);
             UserDto userDto = (UserDto) userDetailsService.loadUserByUsername(username);
             UsernamePasswordAuthenticationToken authentication =
@@ -51,9 +53,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } catch (MalformedJwtException e) {
                 logger.info("Some changed has done in token !! Invalid Token");
                 e.printStackTrace();
+            } catch (UnsupportedJwtException e) {
+                logger.error("JWT token is unsupported: {}", e.getMessage());
+                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
         }
         else {
             logger.info("Invalid Header Value !! ");
