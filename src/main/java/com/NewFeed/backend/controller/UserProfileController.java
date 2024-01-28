@@ -2,6 +2,7 @@ package com.NewFeed.backend.controller;
 
 import com.NewFeed.backend.dto.UserDto;
 import com.NewFeed.backend.dto.UserProfileDto;
+import com.NewFeed.backend.exception.AWSS3ConfigException;
 import com.NewFeed.backend.exception.UserPostException;
 import com.NewFeed.backend.exception.UserProfileException;
 import com.NewFeed.backend.modal.image.Imageable;
@@ -70,7 +71,7 @@ public class UserProfileController {
                     message("image uploaded Successfully").
                     build(), HttpStatus.CREATED);
 
-        } catch (UserPostException e){
+        } catch (UserPostException | AWSS3ConfigException e){
             return new ResponseEntity<>(MessageResponse.
                     builder().
                     message(e.getMessage()).

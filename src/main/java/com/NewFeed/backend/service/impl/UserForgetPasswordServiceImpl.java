@@ -38,7 +38,7 @@ public class UserForgetPasswordServiceImpl implements UserForgetPasswordService 
         NewFeedUser user = userForgetPassword.getUser();
         user.setPassword(passwordEncoder.encode(passwordRequest.getPassword()));
         user.setCreatAt(appProperties.now());
-        userRepository.save(user);
+        deleteUserForgetPassword(userRepository.save(user));
     }
 
 

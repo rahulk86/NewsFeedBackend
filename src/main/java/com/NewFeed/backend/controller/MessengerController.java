@@ -65,7 +65,7 @@ public class MessengerController {
     @SendTo("/topic/GroupConversation/{conversationId}")
     public ResponseEntity<?> sendGroupMessage(Principal principal,
                                          @DestinationVariable Long conversationId,
-                                         @RequestBody GroupMessageDto message) {
+                                             @RequestBody GroupMessageDto message) {
         UserProfile profile = profileService.getUserProfile((UserDto) principal);
         GroupMember groupMember = groupMemberService.groupMember(conversationId, profile);
         GroupMessageDto groupMessage = messageService.creatGroupMessage(groupMember,message);

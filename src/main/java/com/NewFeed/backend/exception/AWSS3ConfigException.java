@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class AmazonS3WithBucketException extends RuntimeException {
-    public AmazonS3WithBucketException(String message) {
+public class AWSS3ConfigException extends RuntimeException {
+    public AWSS3ConfigException(String message) {
         super(message);
     }
 }

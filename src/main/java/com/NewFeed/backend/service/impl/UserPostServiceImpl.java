@@ -99,7 +99,7 @@ public class UserPostServiceImpl implements UserPostService {
         if(post[0] instanceof NewFeedPost feedPost){
             UserPostDto userPostDto = this.postModelMapper.map(feedPost, UserPostDto.class);
             userPostDto.setUserProfile(userModelMapper.map(userPostDto.getUserProfile(), UserProfileDto.class));
-            if(post[index] instanceof Image) {
+            if(post[1] instanceof Image) {
                userPostDto.setImage(this.imageModelMapper.map((Image)post[1], ImageDto.class));
             }
             userPostDto.setUpVote((Long) post[2]);

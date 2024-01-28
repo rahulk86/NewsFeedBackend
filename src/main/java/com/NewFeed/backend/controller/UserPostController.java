@@ -2,9 +2,10 @@ package com.NewFeed.backend.controller;
 
 import com.NewFeed.backend.dto.UserDto;
 import com.NewFeed.backend.dto.UserPostDto;
+import com.NewFeed.backend.exception.AWSS3ConfigException;
 import com.NewFeed.backend.exception.UserPostException;
-import com.NewFeed.backend.modal.image.Imageable;
 import com.NewFeed.backend.modal.feed.Votable;
+import com.NewFeed.backend.modal.image.Imageable;
 import com.NewFeed.backend.payload.Response.MessageResponse;
 import com.NewFeed.backend.service.ImageService;
 import com.NewFeed.backend.service.UserPostService;
@@ -45,7 +46,7 @@ public class UserPostController {
                     message("Post Created Successfully").
                     build(), HttpStatus.CREATED);
         }
-        catch (UserPostException e){
+        catch (UserPostException | AWSS3ConfigException e){
             return new ResponseEntity<>(MessageResponse.
                                             builder().
                                             message(e.getMessage()).
