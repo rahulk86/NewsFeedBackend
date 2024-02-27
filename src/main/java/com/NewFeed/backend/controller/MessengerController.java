@@ -11,6 +11,7 @@ import com.NewFeed.backend.service.UserProfileService;
 import com.NewFeed.backend.service.messaging.GroupMemberService;
 import com.NewFeed.backend.service.messaging.MessageService;
 import com.NewFeed.backend.service.messaging.MessengerService;
+import com.auth.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;

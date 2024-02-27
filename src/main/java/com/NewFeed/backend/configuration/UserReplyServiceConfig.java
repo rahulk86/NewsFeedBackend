@@ -20,10 +20,6 @@ public class UserReplyServiceConfig {
             mapper.map(src -> src.getParent().getId(),UserReplyDto::setReplyId);
             mapper.using(repliesToLong).map(NewFeedReply::getReplies,UserReplyDto::setReplies);
         });
-
-        modelMapper.typeMap(UserReplyDto.class, NewFeedReply.class).addMappings(mapper -> {
-            mapper.map(src->1,NewFeedReply::setActive);
-        });
         return modelMapper;
     }
 }

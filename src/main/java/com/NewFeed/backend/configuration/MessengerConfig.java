@@ -33,20 +33,17 @@ public class MessengerConfig {
         });
 
         modelMapper.typeMap(UserProfile.class, UserMessenger.class).addMappings(mapper -> {
-            mapper.map(src->1,UserMessenger::setActive);
             mapper.map(src->null,UserMessenger::setId);
         });
 
 
 
         modelMapper.typeMap(UserProfile.class, GroupMember.class).addMappings(mapper -> {
-            mapper.map(src->1,GroupMember::setActive);
             mapper.map(src->null,GroupMember::setId);
             mapper.map(src-> GroupRole.ROLE_USER,GroupMember::setRole);
         });
 
         modelMapper.typeMap(UserProfile.class, UserConversation.class).addMappings(mapper -> {
-            mapper.map(src->1,UserConversation::setActive);
             mapper.map(src-> null,UserConversation::setId);
         });
 

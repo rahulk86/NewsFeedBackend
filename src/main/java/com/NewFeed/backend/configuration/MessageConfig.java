@@ -24,14 +24,6 @@ public class MessageConfig {
         });
 
 
-        modelMapper.typeMap(UserMessageDto.class, UserMessage.class).addMappings(mapper -> {
-            mapper.map(src->1,UserMessage::setActive);
-        });
-
-        modelMapper.typeMap(GroupMessageDto.class, GroupMessage.class).addMappings(mapper -> {
-            mapper.map(src->1,GroupMessage::setActive);
-        });
-
         return modelMapper;
     }
 }

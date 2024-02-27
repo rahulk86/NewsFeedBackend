@@ -13,9 +13,8 @@ public interface GroupMessageRepository extends JpaRepository<GroupMessage,Long>
             " profileImage " +
             "from GroupMessage message " +
                 "left join Image profileImage on profileImage.imageableId = message.groupMember.profile.id and" +
-                " profileImage.imageableType = 'UserProfile' and" +
-                " profileImage.active = 1 " +
+                " profileImage.imageableType = 'UserProfile' " +
             " Where message.groupMember.conversation = ?1 " +
-            " order by message.creatAt ")
+            " order by message.updateAt ")
     List<Object[]> findByGroupConversation(GroupConversation conversation);
 }

@@ -1,7 +1,7 @@
 package com.NewFeed.backend.modal.messaging;
 
-import com.NewFeed.backend.modal.BaseModel;
 import com.NewFeed.backend.modal.user.UserProfile;
+import com.auth.modal.BaseModel;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

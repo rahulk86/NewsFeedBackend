@@ -1,5 +1,6 @@
 package com.NewFeed.backend.modal;
 
+import com.auth.modal.BaseModel;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,11 +13,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @MappedSuperclass
-public class NewFeedTextContent {
-    protected int active;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id ;
-    protected LocalDateTime creatAt;
+public class NewFeedTextContent extends BaseModel {
     protected String text;
 }

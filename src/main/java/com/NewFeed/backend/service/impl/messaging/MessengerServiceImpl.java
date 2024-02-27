@@ -1,6 +1,5 @@
 package com.NewFeed.backend.service.impl.messaging;
 
-import com.NewFeed.backend.configuration.security.AppProperties;
 import com.NewFeed.backend.dto.ImageDto;
 import com.NewFeed.backend.dto.MessengerDto;
 import com.NewFeed.backend.exception.MessengerException;
@@ -25,9 +24,6 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class MessengerServiceImpl implements MessengerService {
-
-    @Autowired
-    private AppProperties appProperties;
 
     @Autowired
     private GroupMemberRepository groupMemberRepository;
@@ -111,17 +107,14 @@ public class MessengerServiceImpl implements MessengerService {
         UserMessenger userMessenger  =  userMessengerRepository
                 .findByProfileAndConversation (receiver,conversation)
                 .orElseGet(()->{
-                    conversation.setCreatAt(appProperties.now());
                     UserMessenger senderMessenger= messengerModelMapper.map(sender,UserMessenger.class);
                     senderMessenger.setProfile(sender);
                     senderMessenger.setConversation(conversation);
-                    senderMessenger.setCreatAt(appProperties.now());
                     userMessengerRepository.save(senderMessenger);
 
                     UserMessenger receiverMessenger= messengerModelMapper.map(receiver,UserMessenger.class);
                     receiverMessenger.setProfile(receiver);
                     receiverMessenger.setConversation(conversation);
-                    receiverMessenger.setCreatAt(appProperties.now());
                     return userMessengerRepository.save(receiverMessenger);
 
                 });
@@ -137,8 +130,6 @@ public class MessengerServiceImpl implements MessengerService {
         member.setConversation(conversationSave);
         member.setRole(role);
         member.setProfile(profile);
-        member.setCreatAt(appProperties.now());
-        member.setActive(1);
         groupMemberRepository.save(member);
     }
     @Transactional
@@ -146,15 +137,11 @@ public class MessengerServiceImpl implements MessengerService {
     public MessengerDto createGroupMessenger(UserProfile sender,MessengerDto messenger,List<UserProfile> receiver) {
 
         GroupConversation conversation = new GroupConversation();
-        conversation.setCreatAt(appProperties.now());
-        conversation.setActive(1);
         GroupConversation conversationSave = conversationRepository.save(conversation);
 
         GroupMessenger groupMessenger = new GroupMessenger();
         groupMessenger.setName(messenger.getName());
         groupMessenger.setConversation(conversationSave);
-        groupMessenger.setCreatAt(appProperties.now());
-        groupMessenger.setActive(1);
         GroupMessenger save = groupMessengerRepository.save(groupMessenger);
 
         createGroupMember(sender,conversationSave,GroupRole.ROLE_ADMIN);
@@ -180,7 +167,6 @@ public class MessengerServiceImpl implements MessengerService {
                                             .findByProfileAndConversation(profile, userMessenger.getConversation())
                                             .orElse(null);
         if(loginUserMessenger!=null) {
-            loginUserMessenger.setCreatAt(appProperties.now());
             userMessengerRepository.save(loginUserMessenger);
         }
 

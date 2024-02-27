@@ -1,7 +1,7 @@
 package com.NewFeed.backend.modal.feed;
 
-import com.NewFeed.backend.modal.BaseModel;
-import com.NewFeed.backend.modal.user.NewFeedUser;
+import com.auth.modal.BaseModel;
+import com.auth.modal.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @Entity
 public class Followed extends BaseModel {
     @ManyToOne
-    protected NewFeedUser user;
+    protected User user;
     @ManyToOne
-    protected NewFeedUser followedUser;
+    protected User followedUser;
 }

@@ -20,16 +20,13 @@ public interface UserCommentRepository extends JpaRepository<NewFeedComment,Long
                 " profileImage "+
             "from NewFeedComment comment " +
                 "left join Image profileImage on profileImage.imageableId = comment.userProfile.id and" +
-                    " profileImage.imageableType = 'UserProfile' and" +
-                    " profileImage.active = 1 " +
+                    " profileImage.imageableType = 'UserProfile' " +
                 "left join Vote upVote on upVote.votableId = comment.id and" +
                     " upVote.votableType = 'NewFeedComment' and" +
-                    " upVote.voteType = VoteType.UPVOTE and" +
-                    " upVote.active = 1 " +
+                    " upVote.voteType = VoteType.UPVOTE " +
                 "left join Vote downVote on downVote.votableId = comment.id and" +
                     " downVote.votableType = 'NewFeedComment' and" +
-                    " downVote.voteType = VoteType.DOWNVOTE and" +
-                    " downVote.active = 1 " +
+                    " downVote.voteType = VoteType.DOWNVOTE " +
                 "where comment.parent = ?1 "+
                 "group by " +
                     "comment , profileImage ")

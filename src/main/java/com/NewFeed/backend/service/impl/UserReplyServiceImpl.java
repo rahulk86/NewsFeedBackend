@@ -1,6 +1,5 @@
 package com.NewFeed.backend.service.impl;
 
-import com.NewFeed.backend.configuration.security.AppProperties;
 import com.NewFeed.backend.dto.*;
 import com.NewFeed.backend.exception.UserReplyException;
 import com.NewFeed.backend.modal.feed.NewFeedComment;
@@ -14,6 +13,7 @@ import com.NewFeed.backend.repository.feed.UserPostRepository;
 import com.NewFeed.backend.repository.user.UserProfileRepository;
 import com.NewFeed.backend.repository.feed.UserReplyRepository;
 import com.NewFeed.backend.service.UserReplyService;
+import com.auth.dto.UserDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,8 +26,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserReplyServiceImpl implements UserReplyService {
-    @Autowired
-    private AppProperties appProperties;
     @Autowired
     private UserCommentRepository userCommentRepository;
     @Autowired
@@ -64,7 +62,6 @@ public class UserReplyServiceImpl implements UserReplyService {
                 orElseThrow(()->new UserReplyException("UserReplyException !! comment is not exists with given comment id :" + userReplyDto.getCommentId()));
         reply.setParent(comment);
         reply.setUserProfile(userProfile);
-        reply.setCreatAt(appProperties.now());
         return replyServiceModelMapper.map(userReplyRepository.save(reply),UserReplyDto.class);
     }
 
@@ -80,7 +77,6 @@ public class UserReplyServiceImpl implements UserReplyService {
                 findById(userReplyDto.getReplyId()).
                 orElseThrow(()->new UserReplyException("UserReplyException !! reply is not exists with given reply id :" + userReplyDto.getReplyId()));
         reply.setParent(reply1);
-        reply.setCreatAt(appProperties.now());
         reply.setUserProfile(userProfile);
         return replyServiceModelMapper.map(userReplyRepository.save(reply),UserReplyDto.class);
 

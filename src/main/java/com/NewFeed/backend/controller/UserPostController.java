@@ -1,6 +1,5 @@
 package com.NewFeed.backend.controller;
 
-import com.NewFeed.backend.dto.UserDto;
 import com.NewFeed.backend.dto.UserPostDto;
 import com.NewFeed.backend.exception.AWSS3ConfigException;
 import com.NewFeed.backend.exception.UserPostException;
@@ -10,6 +9,7 @@ import com.NewFeed.backend.payload.Response.MessageResponse;
 import com.NewFeed.backend.service.ImageService;
 import com.NewFeed.backend.service.UserPostService;
 import com.NewFeed.backend.service.VotableService;
+import com.auth.dto.UserDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

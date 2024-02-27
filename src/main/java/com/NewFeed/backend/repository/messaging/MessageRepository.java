@@ -12,7 +12,7 @@ public interface MessageRepository extends JpaRepository<UserMessage,Long> {
             " message " +
             "from UserMessage message " +
             " Where message.messenger.conversation = ?1 "+
-            " order by message.creatAt ")
+            " order by message.updateAt ")
     List<UserMessage> findByUserConversation(UserConversation conversation);
 
 }

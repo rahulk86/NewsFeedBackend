@@ -23,11 +23,6 @@ public class UserPostServiceConfig {
         modelMapper.typeMap(NewFeedPost.class, UserPostDto.class).addMappings(mapper -> {
             mapper.using(commentsToLong).map(NewFeedPost::getComments,UserPostDto::setComments);
         });
-
-
-        modelMapper.typeMap(UserPostDto.class, NewFeedPost.class).addMappings(mapper -> {
-            mapper.map(src->1,NewFeedPost::setActive);
-        });
         return modelMapper;
     }
 }

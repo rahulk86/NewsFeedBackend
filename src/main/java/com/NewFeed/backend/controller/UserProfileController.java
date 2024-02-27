@@ -1,6 +1,5 @@
 package com.NewFeed.backend.controller;
 
-import com.NewFeed.backend.dto.UserDto;
 import com.NewFeed.backend.dto.UserProfileDto;
 import com.NewFeed.backend.exception.AWSS3ConfigException;
 import com.NewFeed.backend.exception.UserPostException;
@@ -9,6 +8,7 @@ import com.NewFeed.backend.modal.image.Imageable;
 import com.NewFeed.backend.payload.Response.MessageResponse;
 import com.NewFeed.backend.service.ImageService;
 import com.NewFeed.backend.service.UserProfileService;
+import com.auth.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

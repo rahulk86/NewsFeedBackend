@@ -17,9 +17,7 @@ public interface ConversationRepository extends JpaRepository<Conversation,Long>
             "inner join UserMessenger reciverMessenger on " +
             " messenger.conversation = reciverMessenger.conversation and" +
             " messenger.profile = ?1 and" +
-            " reciverMessenger.profile = ?2 and" +
-            " messenger.active = 1 and" +
-            " reciverMessenger.active = 1 " )
+            " reciverMessenger.profile = ?2 " )
     Optional<UserConversation> findBySenderAndReceiver(
             @Param("sender") UserProfile sender,
             @Param("receiver") UserProfile receiver

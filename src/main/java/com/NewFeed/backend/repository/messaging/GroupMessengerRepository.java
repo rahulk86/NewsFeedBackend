@@ -16,15 +16,12 @@ public interface GroupMessengerRepository extends JpaRepository<GroupMessenger,L
             " groupImage " +
             "from GroupMessenger messenger " +
                 "inner join GroupMember member on " +
-                    " messenger.conversation = member.conversation and" +
-                    " member.profile = ?1 and" +
-                    " messenger.active = 1 and " +
-                    " member.active = 1 " +
+                    " messenger.conversation = member.conversation and " +
+                    " member.profile = ?1 " +
                 "left join UnreadGroupMessage message on " +
                     " message.member = member "+
-                "left join Image groupImage on groupImage.imageableId = messenger.id and" +
-                    " groupImage.imageableType = 'GroupMessenger' and" +
-                    " groupImage.active = 1 "+
+                "left join Image groupImage on groupImage.imageableId = messenger.id and " +
+                    " groupImage.imageableType = 'GroupMessenger' " +
             "group by " +
               "messenger,groupImage")
     List<Object[]> findAllByUser(UserProfile profile);
@@ -32,10 +29,8 @@ public interface GroupMessengerRepository extends JpaRepository<GroupMessenger,L
     @Query("select COUNT(*) " +
             "from GroupMessenger messenger " +
                 "inner join GroupMember member on " +
-                    " messenger.conversation = member.conversation and" +
-                    " member.profile = ?1 and" +
-                    " messenger.active = 1 and " +
-                    " member.active = 1 " +
+                    " messenger.conversation = member.conversation and " +
+                    " member.profile = ?1 " +
                 "left join UnreadGroupMessage message on " +
                     " message.member = member "+
             "group by " +

@@ -18,28 +18,23 @@ public interface UserPostRepository extends JpaRepository<NewFeedPost,Long> {
                 " profileImage "+
             "from feedPost post " +
                 "left join Image image on image.imageableId = post.id and" +
-                    " image.imageableType = 'NewFeedPost' and" +
-                    " image.active = 1 " +
+                    " image.imageableType = 'NewFeedPost' " +
                 "left join Image profileImage on profileImage.imageableId = post.userProfile.id and" +
-                    " profileImage.imageableType = 'UserProfile' and" +
-                    " profileImage.active = 1 " +
+                    " profileImage.imageableType = 'UserProfile' " +
                 "left join Vote upVote on upVote.votableId = post.id and" +
                     " upVote.votableType = 'NewFeedPost' and" +
-                    " upVote.voteType = VoteType.UPVOTE and" +
-                    " upVote.active = 1 " +
+                    " upVote.voteType = VoteType.UPVOTE " +
                 "left join Vote downVote on downVote.votableId = post.id and" +
                     " downVote.votableType = 'NewFeedPost' and" +
-                    " downVote.voteType = VoteType.DOWNVOTE and" +
-                    " downVote.active = 1 " +
+                    " downVote.voteType = VoteType.DOWNVOTE " +
                 "left join Followed followed on followed.followedUser = post.userProfile.user and" +
-                    " followed.user.id = ?1  and" +
-                    " followed.active = 1 " +
+                    " followed.user.id = ?1  " +
                 "group by " +
                       "post , image , profileImage "+
                 "order by MAX(followed) DESC," +
                     "count(upVote) - count(downVote) DESC, " +
                     "size(post.comments) DESC, " +
-                    "post.creatAt DESC ")
+                    "post.updateAt DESC ")
     Optional<List<Object[]>> findByUserId(Long userId);
     @Query("select " +
                 " post ," +
@@ -51,19 +46,15 @@ public interface UserPostRepository extends JpaRepository<NewFeedPost,Long> {
                 " profileImage "+
             "from feedPost post " +
                 "left join Image image on image.imageableId = post.id and" +
-                    " image.imageableType = 'NewFeedPost' and" +
-                    " image.active = 1 " +
+                    " image.imageableType = 'NewFeedPost' " +
                 "left join Image profileImage on profileImage.imageableId = post.userProfile.id and" +
-                    " profileImage.imageableType = 'UserProfile' and" +
-                    " profileImage.active = 1 " +
+                    " profileImage.imageableType = 'UserProfile' " +
                 "left join Vote upVote on upVote.votableId = post.id and" +
                     " upVote.votableType = 'NewFeedPost' and" +
-                    " upVote.voteType = VoteType.UPVOTE and" +
-                    " upVote.active = 1 " +
+                    " upVote.voteType = VoteType.UPVOTE " +
                 "left join Vote downVote on downVote.votableId = post.id and" +
                     " downVote.votableType = 'NewFeedPost' and" +
-                    " downVote.voteType = VoteType.DOWNVOTE and" +
-                    " downVote.active = 1 " +
+                    " downVote.voteType = VoteType.DOWNVOTE " +
                 "where post.id = ?1 " +
                 "group by " +
                     "post , image , profileImage ")

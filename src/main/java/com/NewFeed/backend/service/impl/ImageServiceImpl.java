@@ -1,7 +1,6 @@
 package com.NewFeed.backend.service.impl;
 
 import com.NewFeed.backend.configuration.AWSS3Config.AmazonS3Bucket;
-import com.NewFeed.backend.configuration.security.AppProperties;
 import com.NewFeed.backend.modal.image.Image;
 import com.NewFeed.backend.modal.image.Imageable;
 import com.NewFeed.backend.repository.image.ImageRepository;
@@ -17,8 +16,6 @@ import java.io.IOException;
 @Service
 public class ImageServiceImpl implements ImageService {
     @Autowired
-    private AppProperties appProperties;
-    @Autowired
     private ImageRepository imageRepository;
 
     @Autowired
@@ -33,8 +30,7 @@ public class ImageServiceImpl implements ImageService {
                                                              .getSimpleName(),
                                                            imageable.getId())
                         .orElse(null);
-        if(image!=null && image.getActive()==1){
-            image.setActive(0);
+        if(image!=null){
             imageRepository.save(image);
         }
 
@@ -44,8 +40,6 @@ public class ImageServiceImpl implements ImageService {
         newImage.setUrl(amazonS3WithBucket.getUrl());
         newImage.setImageableId(imageable.getId());
         newImage.setImageableType(imageable.getClass().getSimpleName());
-        newImage.setActive(1);
-        newImage.setCreatAt(appProperties.now());
         imageRepository.save(newImage);
     }
 }

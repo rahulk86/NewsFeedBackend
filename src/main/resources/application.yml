@@ -2,13 +2,16 @@ server:
   port: 8086
 
 spring:
+    thymeleaf:
+      prefix: classpath:/templates/
+      suffix: .html
     datasource:
-      url: jdbc:mysql://tabnewfeednew.cygxiwp4edin.ap-southeast-2.rds.amazonaws.com:8692/newfeed
-      username: rahul86
-      password: Rahul#123
-#      url: jdbc:mysql://localhost:3306/tabnewfeednew
-#      username: root
-#      password: Rahul@123
+#      url: jdbc:mysql://tabnewfeednew.cygxiwp4edin.ap-southeast-2.rds.amazonaws.com:8692/newfeed
+#      username: rahul86
+#      password: Rahul#123
+      url: jdbc:mysql://localhost:3306/tabnewfeednew
+      username: root
+      password: Rahul@123
     jpa:
         show-sql: true
         hibernate:
@@ -100,4 +103,5 @@ aws:
   S3Bucket:
    region: us-east-1
    name: newfeedrecatclone
+
 

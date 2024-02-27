@@ -1,6 +1,6 @@
 package com.NewFeed.backend.modal.messaging;
 
-import com.NewFeed.backend.modal.BaseModel;
+import com.auth.modal.BaseModel;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;

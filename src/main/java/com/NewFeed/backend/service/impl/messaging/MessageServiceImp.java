@@ -1,6 +1,5 @@
 package com.NewFeed.backend.service.impl.messaging;
 
-import com.NewFeed.backend.configuration.security.AppProperties;
 import com.NewFeed.backend.dto.*;
 import com.NewFeed.backend.exception.MessageException;
 import com.NewFeed.backend.modal.image.Image;
@@ -9,6 +8,7 @@ import com.NewFeed.backend.modal.user.UserProfile;
 import com.NewFeed.backend.payload.Response.UserMessageResponse;
 import com.NewFeed.backend.repository.messaging.*;
 import com.NewFeed.backend.service.messaging.MessageService;
+import com.auth.configuration.security.AppProperties;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,9 +28,6 @@ public class MessageServiceImp implements MessageService {
 
     @Autowired
     private GroupMessageRepository groupMessageRepository;
-
-    @Autowired
-    private AppProperties appProperties;
 
     @Autowired
     private ConversationRepository conversationRepository;
@@ -111,14 +108,12 @@ public class MessageServiceImp implements MessageService {
         UserMessenger sender = userMessengerRepository
                                         .findByProfileAndConversation(profile, conversation)
                                         .orElseThrow(() -> new MessageException("MessageException : messenger not fount with given profile id : " + profile.getId()));
-        sender.setCreatAt(appProperties.now());
         UserMessenger userMessenger = userMessengerRepository.save(sender);
         unreadUserMessageRepository.
                 deleteUnreadUserMessageByMessenger(userMessenger);
 
         UserMessage userMessage = messageModelMapper.map(userMessageDto,UserMessage.class);
         userMessage.setMessenger(sender);
-        userMessage.setCreatAt(appProperties.now());
         UserMessage message = messageRepository.save(userMessage);
 
 
@@ -130,8 +125,6 @@ public class MessageServiceImp implements MessageService {
                     UnreadUserMessage unreadUserMessage = new UnreadUserMessage();
                     unreadUserMessage.setMessenger(messenger);
                     unreadUserMessage.setMessage(message);
-                    unreadUserMessage.setCreatAt(appProperties.now());
-                    unreadUserMessage.setActive(1);
                     unreadUserMessageRepository.save(unreadUserMessage);
                  });
 
@@ -150,14 +143,12 @@ public class MessageServiceImp implements MessageService {
     public GroupMessageDto creatGroupMessage(GroupMember groupMember, GroupMessageDto groupMessage) {
         GroupMessage message = messageModelMapper.map(groupMessage,GroupMessage.class);
         message.setGroupMember(groupMember);
-        message.setCreatAt(appProperties.now());
         GroupMessage message1 = groupMessageRepository.save(message);
 
         GroupMessenger groupMessenger = messengerRepository
                                             .findByConversation(groupMember.getConversation())
                                             .orElse(null);
         if(groupMessenger!=null) {
-            groupMessenger.setCreatAt(appProperties.now());
             messengerRepository.save(groupMessenger);
         }
 
@@ -166,8 +157,6 @@ public class MessageServiceImp implements MessageService {
                 .filter(member -> !Objects.equals(member.getId(), groupMember.getId()))
                 .forEach(member->{
                     UnreadGroupMessage unreadGroupMessage = new UnreadGroupMessage();
-                    unreadGroupMessage.setActive(1);
-                    unreadGroupMessage.setCreatAt(appProperties.now());
                     unreadGroupMessage.setMember(member);
                     unreadGroupMessage.setMessage(message1);
                     unreadGroupMessageRepository.save(unreadGroupMessage);

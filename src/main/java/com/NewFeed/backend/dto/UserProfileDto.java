@@ -1,6 +1,7 @@
 package com.NewFeed.backend.dto;
 
-import com.NewFeed.backend.modal.user.GenderType;
+import com.auth.dto.UserDto;
+import com.auth.modal.user.GenderType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

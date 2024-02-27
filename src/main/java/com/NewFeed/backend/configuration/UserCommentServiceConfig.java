@@ -21,9 +21,6 @@ public class UserCommentServiceConfig {
             mapper.using(repliesToLong).map(NewFeedComment::getCommentReplies,UserCommentDto::setReplies);
         });
 
-        modelMapper.typeMap(UserCommentDto.class, NewFeedComment.class).addMappings(mapper -> {
-            mapper.map(src->1,NewFeedComment::setActive);
-        });
         return modelMapper;
     }
 }

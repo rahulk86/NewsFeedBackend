@@ -1,6 +1,5 @@
 package com.NewFeed.backend.controller;
 
-import com.NewFeed.backend.dto.UserDto;
 import com.NewFeed.backend.dto.UserReplyDto;
 import com.NewFeed.backend.exception.UserCommentException;
 import com.NewFeed.backend.exception.UserPostException;
@@ -12,6 +11,7 @@ import com.NewFeed.backend.service.UserCommentService;
 import com.NewFeed.backend.service.UserPostService;
 import com.NewFeed.backend.service.UserReplyService;
 import com.NewFeed.backend.service.VotableService;
+import com.auth.dto.UserDto;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

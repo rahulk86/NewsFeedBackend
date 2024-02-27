@@ -18,16 +18,13 @@ public interface UserReplyRepository extends JpaRepository<NewFeedReply,Long> {
                 " profileImage "+
             "from NewFeedReply reply " +
                 "left join Image profileImage on profileImage.imageableId = reply.userProfile.id and" +
-                    " profileImage.imageableType = 'UserProfile' and" +
-                    " profileImage.active = 1 " +
+                    " profileImage.imageableType = 'UserProfile' " +
                 "left join Vote upVote on upVote.votableId = reply.id and" +
                     " upVote.votableType = 'NewFeedComment' and" +
-                    " upVote.voteType = VoteType.UPVOTE and" +
-                    " upVote.active = 1 " +
+                    " upVote.voteType = VoteType.UPVOTE " +
                 "left join Vote downVote on downVote.votableId = reply.id and" +
                     " downVote.votableType = 'NewFeedComment' and" +
-                    " downVote.voteType = VoteType.DOWNVOTE and" +
-                    " downVote.active = 1 " +
+                    " downVote.voteType = VoteType.DOWNVOTE  " +
                 "where reply.parent = ?1 "+
                 "group by " +
                     "reply , profileImage ")

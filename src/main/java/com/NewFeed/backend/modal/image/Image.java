@@ -1,6 +1,6 @@
 package com.NewFeed.backend.modal.image;
 
-import com.NewFeed.backend.modal.BaseModel;
+import com.auth.modal.BaseModel;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;

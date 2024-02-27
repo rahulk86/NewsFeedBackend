@@ -1,9 +1,9 @@
 package com.NewFeed.backend.service;
 
-import com.NewFeed.backend.dto.UserDto;
 import com.NewFeed.backend.dto.UserReplyDto;
 import com.NewFeed.backend.modal.feed.Votable;
 import com.NewFeed.backend.payload.Request.VoteOnReply;
+import com.auth.dto.UserDto;
 
 import java.util.List;
 
