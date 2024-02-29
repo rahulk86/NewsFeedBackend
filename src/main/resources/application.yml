@@ -3,8 +3,7 @@ server:
 
 spring:
     thymeleaf:
-      prefix: classpath:/templates/
-      suffix: .html
+       prefix : file:./target/classes/static
     datasource:
 #      url: jdbc:mysql://tabnewfeednew.cygxiwp4edin.ap-southeast-2.rds.amazonaws.com:8692/newfeed
 #      username: rahul86
