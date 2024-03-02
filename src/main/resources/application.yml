@@ -2,15 +2,13 @@ server:
   port: 8086
 
 spring:
-    thymeleaf:
-       prefix : file:./target/classes/static
     datasource:
-#      url: jdbc:mysql://tabnewfeednew.cygxiwp4edin.ap-southeast-2.rds.amazonaws.com:8692/newfeed
-#      username: rahul86
-#      password: Rahul#123
-      url: jdbc:mysql://localhost:3306/tabnewfeednew
-      username: root
-      password: Rahul@123
+      url: jdbc:mysql://tabnewfeednew.cygxiwp4edin.ap-southeast-2.rds.amazonaws.com:8692/newFeedUpdated
+      username: rahul86
+      password: Rahul#123
+#      url: jdbc:mysql://localhost:3306/tabnewfeednew
+#      username: root
+#      password: Rahul@123
     jpa:
         show-sql: true
         hibernate:
@@ -77,9 +75,6 @@ app:
     cors:
       allowCredentials: true
       allowedOrigins:
-        - http://localhost:3000
-        - http://54.253.132.48:3000
-        - http://192.168.29.228:3000
         - http://newfeedrecatclone.s3-website-us-east-1.amazonaws.com
       allowedMethods:
         - GET
